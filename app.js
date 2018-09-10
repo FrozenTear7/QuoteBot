@@ -115,7 +115,7 @@ client.on('message', message => {
             })
           else if (quotes.length > 0) {
             quotes.forEach(quote => {
-              authorQuotes.push(quote.author)
+              authorQuotes.push(quote.quote)
             })
             message.channel.send(authorQuotes).then(msg => {
               msg.delete(40000)
