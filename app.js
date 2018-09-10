@@ -83,7 +83,8 @@ client.on('message', message => {
             message.channel.send(err)
           else if (quotes.length > 0) {
             quotes.forEach(quote => {
-              authors.push(quote.author)
+              if (!authors.includes(quote.author))
+                authors.push(quote.author)
             })
 
             message.channel.send(authors)
