@@ -55,12 +55,12 @@ client.on('message', message => {
   } else if (message.content.match(/!quote .*/) || message.content.match(/!q .*/)) {
     let author
 
-    if(message.content.match(/!quote .*/))
+    if (message.content.match(/!quote .*/))
       author = message.content.match(/!quote .*/)[0].substring(7)
     else if (message.content.match(/!q .*/))
       author = message.content.match(/!q .*/)[0].substring(3)
 
-    if(author)
+    if (author)
       Quote.find({server: message.channel.guild.name, author: author})
         .exec((err, quotes) => {
           if (err)
@@ -74,6 +74,24 @@ client.on('message', message => {
         })
     else
       message.channel.send('Wrong author')
+  } else if (message.content.match(/!authors/) || message.content.match(/!a/)) {
+    let authors = []
+
+    Quote.find({server: message.channel.guild.name})
+      .exec((err, quotes) => {
+          if (err)
+            message.channel.send(err)
+          else if (quotes.length > 0) {
+            quotes.forEach(quote => {
+              authors.push(quote.author)
+            })
+
+            message.channel.send(authors)
+          } else {
+            message.channel.send('No authors available!')
+          }
+        },
+      )
   }
 })
 
