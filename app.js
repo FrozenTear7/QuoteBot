@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 // const config = require('./config.json')
 const Quote = require('./quoteSchema')
 const express = require('express')
-const http = require('http')
+const https = require('https')
 
 const app = express()
 
@@ -26,7 +26,7 @@ db.once('open', function () {
 client.on('ready', () => {
   console.log('Ready!')
   setInterval(() => {
-    http.get('https://discord-quote-bot-frozentear7.herokuapp.com/')
+    https.get('https://discord-quote-bot-frozentear7.herokuapp.com/')
   }, 5000)
 })
 
