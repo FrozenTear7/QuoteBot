@@ -52,18 +52,28 @@ client.on('message', message => {
           msg.delete(3000)
         })
     })
-  } else if (message.content.match(/!quote .*/)) {
-    Quote.find({server: message.channel.guild.name, author: message.content.match(/!quote .*/)[0].substring(7)})
-      .exec((err, quotes) => {
-        if (err)
-          message.channel.send(err)
-        else {
-          if (quotes.length === 0)
-            message.channel.send('This author has no quotes yet!')
-          else
-            message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))].quote)
-        }
-      })
+  } else if (message.content.match(/!quote .*/) || message.content.match(/!q .*/)) {
+    let author
+
+    if(message.content.match(/!quote .*/))
+      author = message.content.match(/!quote .*/)[0].substring(7)
+    else if (message.content.match(/!q .*/))
+      author = message.content.match(/!q .*/)[0].substring(3)
+
+    if(author)
+      Quote.find({server: message.channel.guild.name, author: author})
+        .exec((err, quotes) => {
+          if (err)
+            message.channel.send(err)
+          else {
+            if (quotes.length === 0)
+              message.channel.send('This author has no quotes yet!')
+            else
+              message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))].quote)
+          }
+        })
+    else
+      message.channel.send('Wrong author')
   }
 })
 
