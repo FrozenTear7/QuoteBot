@@ -16,9 +16,7 @@ function stayAlive (counter) {
   }
 }
 
-app.listen(process.env.PORT || 8080, () => {
-  stayAlive(0)
-})
+app.listen(process.env.PORT || 8080)
 
 const client = new Discord.Client()
 
@@ -36,9 +34,11 @@ db.once('open', function () {
 
 client.on('ready', () => {
   console.log('Ready!')
+  stayAlive(0)
 })
 
 client.on('message', message => {
+  console.log(message)
   if (message.content.match(/".*" ~.*/)) {
     const newQuote = new Quote({
       quote: message.content.match(/".*"/)[0],
