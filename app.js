@@ -2,6 +2,10 @@ const Discord = require('discord.js')
 const mongoose = require('mongoose')
 // const config = require('./config.json')
 const Quote = require('./quoteSchema')
+const express = require('express')
+
+const app = express()
+app.listen(process.env.PORT || 8080)
 
 const client = new Discord.Client()
 
