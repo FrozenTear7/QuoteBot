@@ -95,7 +95,7 @@ client.on('message', message => {
                 authors.push(quote.author)
             })
             message.channel.send(authors).then(msg => {
-              msg.delete(15000)
+              msg.delete(40000)
             })
           } else {
             message.channel.send('No authors available!').then(msg => {
@@ -118,7 +118,7 @@ client.on('message', message => {
               authorQuotes.push(quote.author)
             })
             message.channel.send(authorQuotes).then(msg => {
-              msg.delete(15000)
+              msg.delete(40000)
             })
           } else {
             message.channel.send('No quotes available!').then(msg => {
