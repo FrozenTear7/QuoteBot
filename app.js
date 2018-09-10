@@ -5,14 +5,27 @@ const Quote = require('./quoteSchema')
 const express = require('express')
 
 const app = express()
-app.listen(process.env.PORT || 8080)
+
+function stayAlive (counter) {
+  if (counter < 10) {
+    setTimeout(() => {
+      counter++
+      console.log('Still kickin: ' + counter)
+      start(counter)
+    }, 1000)
+  }
+}
+
+app.listen(process.env.PORT || 8080, () => {
+  stayAlive(0)
+})
 
 const client = new Discord.Client()
 
 mongoose.connect('mongodb://@ds249992.mlab.com:49992/quotebot-db', {
-  'user': process.env.DBUSER,
-  'pass': process.env.DBPASS,
-  'useNewUrlParser': true,
+  "user": process.env.DBUSER,
+  "pass": process.env.DBPASS,
+  "useNewUrlParser": true
 })
 
 let db = mongoose.connection
@@ -35,15 +48,14 @@ client.on('message', message => {
       if (err)
         message.channel.send(err)
       else
-        message.channel.send('SAVED -> Quote: ' + message.content.match(/".*"/)[0] + ', author: ' + message.content.match(/~.*/)[0].substring(1))
-          .then(msg => {
-            msg.delete(5000)
-          })
+        message.channel.send('SAVED -> Quote: ' + message.content.match(/".*"/)[0] + ', author: ' + message.content.match(/~.*/)[0].substring(1)).then(msg => {
+          msg.delete(10000)
+        })
     })
   } else if (message.content.match(/!quote .*/)) {
     Quote.find({author: message.content.match(/!quote .*/)[0].substring(7)})
       .exec((err, quotes) => {
-        if (err)
+          if (err)
           message.channel.send(err)
         else {
           if (quotes.length === 0)
