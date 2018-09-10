@@ -11,8 +11,8 @@ function stayAlive (counter) {
     setTimeout(() => {
       counter++
       console.log('Still kickin: ' + counter)
-      start(counter)
-    }, 1000)
+      stayAlive(counter)
+    }, 100000)
   }
 }
 
@@ -49,7 +49,7 @@ client.on('message', message => {
         message.channel.send(err)
       else
         message.channel.send('SAVED -> Quote: ' + message.content.match(/".*"/)[0] + ', author: ' + message.content.match(/~.*/)[0].substring(1)).then(msg => {
-          msg.delete(10000)
+          msg.delete(3000)
         })
     })
   } else if (message.content.match(/!quote .*/)) {
