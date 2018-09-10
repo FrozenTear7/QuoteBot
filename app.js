@@ -67,12 +67,12 @@ client.on('message', message => {
         .exec((err, quotes) => {
           if (err)
             message.channel.send(err).then(msg => {
-              msg.delete(10000)
+              msg.delete(15000)
             })
           else {
             if (quotes.length === 0)
               message.channel.send('This author has no quotes yet!').then(msg => {
-                msg.delete(10000)
+                msg.delete(15000)
               })
             else
               message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))].quote)
@@ -80,14 +80,14 @@ client.on('message', message => {
         })
     else
       message.channel.send('Wrong author')
-  } else if (message.content.match(/!authors/) || message.content.match(/!a/)) {
+  } else if (message.content.match(/!authors$/) || message.content.match(/!a$/)) {
     let authors = []
 
     Quote.find({server: message.channel.guild.name})
       .exec((err, quotes) => {
           if (err)
             message.channel.send(err).then(msg => {
-              msg.delete(10000)
+              msg.delete(15000)
             })
           else if (quotes.length > 0) {
             quotes.forEach(quote => {
@@ -95,11 +95,11 @@ client.on('message', message => {
                 authors.push(quote.author)
             })
             message.channel.send(authors).then(msg => {
-              msg.delete(10000)
+              msg.delete(15000)
             })
           } else {
             message.channel.send('No authors available!').then(msg => {
-              msg.delete(10000)
+              msg.delete(15000)
             })
           }
         },
@@ -111,7 +111,7 @@ client.on('message', message => {
       .exec((err, quotes) => {
           if (err)
             message.channel.send(err).then(msg => {
-              msg.delete(10000)
+              msg.delete(15000)
             })
           else if (quotes.length > 0) {
             quotes.forEach(quote => {
@@ -122,7 +122,7 @@ client.on('message', message => {
             })
           } else {
             message.channel.send('No quotes available!').then(msg => {
-              msg.delete(10000)
+              msg.delete(15000)
             })
           }
         },
