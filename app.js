@@ -3,18 +3,9 @@ const mongoose = require('mongoose')
 // const config = require('./config.json')
 const Quote = require('./quoteSchema')
 const express = require('express')
+const http = require('http')
 
 const app = express()
-
-function stayAlive (counter) {
-  if (counter < 10) {
-    setTimeout(() => {
-      counter++
-      console.log('Still kickin: ' + counter)
-      stayAlive(counter)
-    }, 100000)
-  }
-}
 
 app.listen(process.env.PORT || 8080)
 
@@ -34,7 +25,9 @@ db.once('open', function () {
 
 client.on('ready', () => {
   console.log('Ready!')
-  stayAlive(0)
+  setInterval(() => {
+    http.get('https://discord-quote-bot-frozentear7.herokuapp.com/')
+  }, 5000)
 })
 
 client.on('message', message => {
