@@ -38,7 +38,7 @@ client.on('ready', () => {
 })
 
 client.on('message', message => {
-  console.log(message)
+  console.log(message.channel)
   if (message.content.match(/".*" ~.*/)) {
     const newQuote = new Quote({
       quote: message.content.match(/".*"/)[0],
