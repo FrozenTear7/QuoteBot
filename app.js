@@ -46,10 +46,12 @@ client.on('message', message => {
     })
     newQuote.save((err) => {
       if (err)
-        message.channel.send(err)
+        message.channel.send(err).then(msg => {
+          msg.delete(10000)
+        })
       else
         message.channel.send('SAVED -> Quote: ' + message.content.match(/".*"/)[0] + ', author: ' + message.content.match(/~.*/)[0].substring(1)).then(msg => {
-          msg.delete(3000)
+          msg.delete(10000)
         })
     })
   } else if (message.content.match(/!quote .*/) || message.content.match(/!q .*/)) {
@@ -64,10 +66,14 @@ client.on('message', message => {
       Quote.find({server: message.channel.guild.name, author: author})
         .exec((err, quotes) => {
           if (err)
-            message.channel.send(err)
+            message.channel.send(err).then(msg => {
+              msg.delete(10000)
+            })
           else {
             if (quotes.length === 0)
-              message.channel.send('This author has no quotes yet!')
+              message.channel.send('This author has no quotes yet!').then(msg => {
+                msg.delete(10000)
+              })
             else
               message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))].quote)
           }
@@ -80,16 +86,21 @@ client.on('message', message => {
     Quote.find({server: message.channel.guild.name})
       .exec((err, quotes) => {
           if (err)
-            message.channel.send(err)
+            message.channel.send(err).then(msg => {
+              msg.delete(10000)
+            })
           else if (quotes.length > 0) {
             quotes.forEach(quote => {
               if (!authors.includes(quote.author))
                 authors.push(quote.author)
             })
-
-            message.channel.send(authors)
+            message.channel.send(authors).then(msg => {
+              msg.delete(10000)
+            })
           } else {
-            message.channel.send('No authors available!')
+            message.channel.send('No authors available!').then(msg => {
+              msg.delete(10000)
+            })
           }
         },
       )
