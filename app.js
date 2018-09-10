@@ -5,7 +5,11 @@ const Quote = require('./quoteSchema')
 
 const client = new Discord.Client()
 
-mongoose.connect('mongodb://@ds249992.mlab.com:49992/quotebot-db', config.dbOptions)
+mongoose.connect('mongodb://@ds249992.mlab.com:49992/quotebot-db', {
+  "user": process.env.DBUSER,
+  "pass": process.env.DBPASS,
+  "useNewUrlParser": true
+})
 
 let db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))
@@ -44,4 +48,4 @@ client.on('message', message => {
   }
 })
 
-client.login(process.env.config.token)
+client.login(process.env.BOT_TOKEN)
