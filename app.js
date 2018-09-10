@@ -104,6 +104,29 @@ client.on('message', message => {
           }
         },
       )
+  } else if (message.content.match(/!all .*/)) {
+    let authorQuotes = []
+
+    Quote.find({server: message.channel.guild.name, author: message.content.match(/!all .*/)[0].substring(5)})
+      .exec((err, quotes) => {
+          if (err)
+            message.channel.send(err).then(msg => {
+              msg.delete(10000)
+            })
+          else if (quotes.length > 0) {
+            quotes.forEach(quote => {
+              authorQuotes.push(quote.author)
+            })
+            message.channel.send(authorQuotes).then(msg => {
+              msg.delete(10000)
+            })
+          } else {
+            message.channel.send('No quotes available!').then(msg => {
+              msg.delete(10000)
+            })
+          }
+        },
+      )
   }
 })
 
