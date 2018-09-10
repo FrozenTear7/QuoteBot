@@ -52,7 +52,7 @@ client.on('message', message => {
           msg.delete(3000)
         })
     })
-  } else if (message.content.match(/!quote .*/)) {
+  } else if (message.content.match(/!quote .*/) || message.content.match(/!q .*/)) {
     Quote.find({server: message.channel.guild.name, author: message.content.match(/!quote .*/)[0].substring(7)})
       .exec((err, quotes) => {
         if (err)
