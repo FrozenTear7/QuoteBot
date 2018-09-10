@@ -44,6 +44,4 @@ client.on('message', message => {
   }
 })
 
-client.login(config.token)
-
-client.listen(process.env.PORT || 8080)
+client.login(process.env.config.token)
