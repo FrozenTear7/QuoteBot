@@ -27,7 +27,7 @@ client.on('ready', () => {
   console.log('Ready!')
   setInterval(() => {
     https.get('https://discord-quote-bot-frozentear7.herokuapp.com/')
-  }, 5000)
+  }, 30000)
 })
 
 client.on('message', message => {
