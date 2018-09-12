@@ -41,6 +41,19 @@ client.on('message', message => {
       server: message.channel.guild.name,
     })
 
+    Author.findOne({
+      server: message.channel.guild.name,
+      names: {$in: message.content.match(/~.+/)[0].substring(1)},
+    }, (err, author) => {
+      if (err)
+        message.channel.send(err).then(msg => {
+          msg.delete(10000)
+        })
+      else {
+        console.log(author)
+      }
+    })
+
     newAuthor.save((err) => {
       if (err)
         message.channel.send(err).then(msg => {
@@ -141,7 +154,6 @@ client.on('message', message => {
         )
     })
   } else if (message.content.match(/^!alias *[^!]+ !is *.+/)) {
-
     Author.findOneAndUpdate(
       {names: {$in: message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */)[0].length)}},
       {names: {$push: message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */)[0].length)}},
