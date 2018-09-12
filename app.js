@@ -48,8 +48,9 @@ client.on('message', message => {
         })
 
         newQuote.save((err) => {
+          console.log(err)
           if (err)
-            message.channel.send(err).then(msg => {
+            message.channel.send('xd').then(msg => {
               msg.delete(15000)
             })
           else {
