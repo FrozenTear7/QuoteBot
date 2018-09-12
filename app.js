@@ -52,10 +52,13 @@ client.on('message', message => {
             message.channel.send(err).then(msg => {
               msg.delete(15000)
             })
-          else
+          else {
+            console.log(newQuote.quote)
+            console.log(author.names[0])
             message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + author.names[0]).then(msg => {
               msg.delete(15000)
             })
+          }
         })
       } else {
         let authorNames = []
