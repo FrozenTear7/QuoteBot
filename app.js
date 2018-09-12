@@ -38,14 +38,10 @@ client.on('message', message => {
       server: message.channel.guild.name,
     })
 
-    console.log(newAuthor)
-
     const newQuote = new Quote({
       quote: message.content.match(/^".+"/)[0],
       author: newAuthor._id,
     })
-
-    console.log(newQuote)
 
     newAuthor.save((err) => {
       if (err)
@@ -72,24 +68,29 @@ client.on('message', message => {
     else if (message.content.match(/^!q *.+/))
       author = message.content.match(/^!q *.+/)[0].substring(message.content.match(/^!q */)[0].length)
 
-    author = Author.findOne({
+    Author.findOne({
       server: message.channel.guild.name,
       name: author,
-    })
-
-    Quote.find({author: author._id}, 'quote', (err, quotes) => {
+    }, (err, author) => {
       if (err)
         message.channel.send(err).then(msg => {
           msg.delete(15000)
         })
-      else {
-        if (quotes.length === 0)
-          message.channel.send('This author has no quotes yet!').then(msg => {
-            msg.delete(15000)
-          })
-        else
-          message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))] + ' - ' + author[0].name)
-      }
+      else
+        Quote.find({author: author._id}, 'quote', (err, quotes) => {
+          if (err)
+            message.channel.send(err).then(msg => {
+              msg.delete(15000)
+            })
+          else {
+            if (quotes.length === 0)
+              message.channel.send('This author has no quotes yet!').then(msg => {
+                msg.delete(15000)
+              })
+            else
+              message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))] + ' - ' + author[0].name)
+          }
+        })
     })
   } else if (message.content.match(/^!authors$/) || message.content.match(/^!a$/)) {
     Author.find({server: message.channel.guild.name}, 'name', (err, authors) => {
@@ -124,7 +125,7 @@ client.on('message', message => {
                 msg.delete(15000)
               })
             else if (quotes.length > 0) {
-              message.channel.send(quotes).then(msg => {
+              message.channel.send(quotes.map(quote => quote.quote)).then(msg => {
                 msg.delete(60000)
               })
             } else {
