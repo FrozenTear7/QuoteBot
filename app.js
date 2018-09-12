@@ -74,7 +74,7 @@ client.on('message', message => {
           else {
             const newQuote = new Quote({
               quote: message.content.match(/^"[^"]+"/)[0],
-              author: newAuthor._id,
+              author: newAuthor,
             })
 
             newQuote.save((err) => {
