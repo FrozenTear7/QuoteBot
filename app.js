@@ -35,6 +35,7 @@ client.on('message', message => {
   if (message.content.match(/^".+" *~.+/)) {
     const newAuthor = new Author({
       name: message.content.match(/~.+/)[0].substring(1),
+      server: message.channel.guild.name,
     })
 
     console.log(newAuthor)
@@ -42,7 +43,6 @@ client.on('message', message => {
     const newQuote = new Quote({
       quote: message.content.match(/^".+"/)[0],
       author: newAuthor._id,
-      server: message.channel.guild.name,
     })
 
     console.log(newQuote)
