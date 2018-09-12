@@ -41,19 +41,17 @@ client.on('message', message => {
       server: message.channel.guild.name,
     })
 
-    console.log(newAuthor)
-
-    const newQuote = new Quote({
-      quote: message.content.match(/^".+"/)[0],
-      author: newAuthor._id,
-    })
-
     newAuthor.save((err) => {
       if (err)
         message.channel.send(err).then(msg => {
           msg.delete(10000)
         })
-      else
+      else {
+        const newQuote = new Quote({
+          quote: message.content.match(/^".+"/)[0],
+          author: newAuthor._id,
+        })
+
         newQuote.save((err) => {
           if (err)
             message.channel.send(err).then(msg => {
@@ -64,6 +62,7 @@ client.on('message', message => {
               msg.delete(10000)
             })
         })
+      }
     })
   } else if (message.content.match(/^!quote *.+/) || message.content.match(/^!q *.+/)) {
     let author
@@ -75,7 +74,7 @@ client.on('message', message => {
 
     Author.findOne({
       server: message.channel.guild.name,
-      names: {"$in": author},
+      names: {'$in': author},
     }, (err, author) => {
       if (err)
         message.channel.send(err).then(msg => {
@@ -93,7 +92,7 @@ client.on('message', message => {
                 msg.delete(15000)
               })
             else
-              message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))] + ' - ' + author.names[0])
+              message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))].quote + ' - ' + author.names[0])
           }
         })
     })
