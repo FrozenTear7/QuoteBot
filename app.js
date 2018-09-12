@@ -114,6 +114,8 @@ client.on('message', message => {
       name: message.content.match(/^!all *.+/)[0].substring(message.content.match(/^!all */)[0].length),
     })
 
+    console.log(author)
+
     Quote.find({author: author._id}, 'quote', (err, quotes) => {
         if (err)
           message.channel.send(err).then(msg => {
