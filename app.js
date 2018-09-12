@@ -51,9 +51,9 @@ client.on('message', message => {
     let author
 
     if (message.content.match(/^!quote *.*/))
-      author = message.content.match(/^!quote *.*/)[0].substring(7)
+      author = message.content.match(/^!quote *.*/)[0].substring(message.content.match(/^!quote */)[0].length)
     else if (message.content.match(/^!q *.*/))
-      author = message.content.match(/^!q *.*/)[0].substring(3)
+      author = message.content.match(/^!q *.*/)[0].substring(message.content.match(/^!q */)[0].length)
 
     if (author)
       Quote.find({server: message.channel.guild.name, author: author})
