@@ -177,7 +177,7 @@ client.on('message', message => {
     })
   } else if (message.content.match(/^!alias *[^!]+ !is *.+/)) {
     Author.findOneAndUpdate(
-      {$in: {names: message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */)[0].length)}},
+      {names: {$in: message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */)[0].length)}},
       {$push: {names: message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */)[0].length)}},
       (err) => {
         if (err)
