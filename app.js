@@ -24,7 +24,7 @@ db.once('open', () => {
   console.log('Connection open')
 })
 
-db.author.createIndex({name: 1, server: 1}, {unique: true})
+db.Author.createIndex({name: 1, server: 1}, {unique: true})
 
 client.on('ready', () => {
   console.log('Ready!')
