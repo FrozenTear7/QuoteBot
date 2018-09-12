@@ -37,11 +37,15 @@ client.on('message', message => {
       name: message.content.match(/~.+/)[0].substring(1),
     })
 
+    console.log(newAuthor)
+
     const newQuote = new Quote({
       quote: message.content.match(/^".+"/)[0],
       author: newAuthor._id,
       server: message.channel.guild.name,
     })
+
+    console.log(newQuote)
 
     newAuthor.save((err) => {
       if (err)
