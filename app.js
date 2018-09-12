@@ -74,7 +74,7 @@ client.on('message', message => {
 
     Author.findOne({
       server: message.channel.guild.name,
-      names: {'$in': author},
+      names: {$in: author},
     }, (err, author) => {
       if (err)
         message.channel.send(err).then(msg => {
@@ -116,7 +116,7 @@ client.on('message', message => {
   } else if (message.content.match(/^!all *.+/)) {
     Author.findOne({
       server: message.channel.guild.name,
-      names: {'$in': message.content.match(/^!all *.+/)[0].substring(message.content.match(/^!all */)[0].length)},
+      names: {$in: message.content.match(/^!all *.+/)[0].substring(message.content.match(/^!all */)[0].length)},
     }, (err, author) => {
       if (err)
         message.channel.send(err).then(msg => {
@@ -141,25 +141,21 @@ client.on('message', message => {
         )
     })
   } else if (message.content.match(/^!alias *[^!]+ !is *.+/)) {
-    console.log(message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */)[0].length))
-    console.log(message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */)[0].length))
 
-    Author.findOneAndUpdate({
-      names: {
-        '$in': message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */).length),
-        '$push': message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */).length),
-      },
-    }, (err) => {
-      if (err)
-        message.channel.send(err).then(msg => {
-          msg.delete(15000)
-        })
-      else {
-        message.channel.send('New alias set!').then(msg => {
-          msg.delete(15000)
-        })
-      }
-    })
+    Author.findOneAndUpdate(
+      {names: {$in: message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */)[0].length)}},
+      {names: {$push: message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */)[0].length)}},
+      (err) => {
+        if (err)
+          message.channel.send(err).then(msg => {
+            msg.delete(15000)
+          })
+        else {
+          message.channel.send('New alias set!').then(msg => {
+            msg.delete(15000)
+          })
+        }
+      })
   }
 })
 
