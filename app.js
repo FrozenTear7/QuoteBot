@@ -32,7 +32,7 @@ client.on('ready', () => {
 })
 
 client.on('message', message => {
-  if (message.content.match(/^".+" *~.+/)) {
+  if (message.content.match(/^"[^"]+" *~.+/)) {
     let authorNames = []
     authorNames.push(message.content.match(/~.+/)[0].substring(1))
 
@@ -48,7 +48,7 @@ client.on('message', message => {
         })
       else {
         const newQuote = new Quote({
-          quote: message.content.match(/^".+"/)[0],
+          quote: message.content.match(/^"[^"]+"/)[0],
           author: newAuthor._id,
         })
 
