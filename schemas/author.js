@@ -5,8 +5,6 @@ const author = new mongoose.Schema({
   server: {type: String, required: true},
 })
 
-db.author.createIndex({name: 1, server: 1}, {unique: true})
-
 const Author = mongoose.model('Author', author)
 
 module.exports = Author
