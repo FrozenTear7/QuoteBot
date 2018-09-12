@@ -191,6 +191,24 @@ client.on('message', message => {
           })
         }
       })
+  } else if (message.content.match(/^!aliases *.+/)) {
+    Author.findOne({
+      server: message.channel.guild.name,
+      names: {$in: message.content.match(/^!aliases *.+/)[0].substring(message.content.match(/^!aliases */)[0].length)},
+    }, (err, author) => {
+      if (err)
+        message.channel.send(err.errmsg).then(msg => {
+          msg.delete(15000)
+        })
+      else if (author)
+        message.channel.send(author.names).then(msg => {
+          msg.delete(15000)
+        })
+      else
+        message.channel.send('Author does not exist!').then(msg => {
+          msg.delete(15000)
+        })
+    })
   }
 })
 
