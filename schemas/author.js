@@ -5,7 +5,7 @@ const author = new mongoose.Schema({
   server: {type: String, required: true},
 })
 
-author.index({ name: 1, server: 1}, { unique: true });
+db.author.createIndex({name: 1, server: 1}, {unique: true})
 
 const Author = mongoose.model('Author', author)
 
