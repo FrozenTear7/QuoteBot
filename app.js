@@ -49,20 +49,10 @@ client.on('message', message => {
         message.channel.send(err).then(msg => {
           msg.delete(10000)
         })
-      else {
-        console.log(author)
-      }
-    })
-
-    newAuthor.save((err) => {
-      if (err)
-        message.channel.send(err).then(msg => {
-          msg.delete(10000)
-        })
-      else {
+      else if (author) {
         const newQuote = new Quote({
           quote: message.content.match(/^"[^"]+"/)[0],
-          author: newAuthor._id,
+          author: author._id,
         })
 
         newQuote.save((err) => {
@@ -71,12 +61,36 @@ client.on('message', message => {
               msg.delete(10000)
             })
           else
-            message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + newAuthor.names[0]).then(msg => {
+            message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + author.names[0]).then(msg => {
               msg.delete(10000)
             })
         })
-      }
+      } else if (!author)
+        newAuthor.save((err) => {
+          if (err)
+            message.channel.send(err).then(msg => {
+              msg.delete(10000)
+            })
+          else {
+            const newQuote = new Quote({
+              quote: message.content.match(/^"[^"]+"/)[0],
+              author: newAuthor._id,
+            })
+
+            newQuote.save((err) => {
+              if (err)
+                message.channel.send(err).then(msg => {
+                  msg.delete(10000)
+                })
+              else
+                message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + newAuthor.names[0]).then(msg => {
+                  msg.delete(10000)
+                })
+            })
+          }
+        })
     })
+
   } else if (message.content.match(/^!quote *.+/) || message.content.match(/^!q *.+/)) {
     let author
 
