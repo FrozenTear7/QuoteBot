@@ -179,7 +179,12 @@ client.on('message', message => {
     Author.findOneAndUpdate(
       {names: {$in: message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */)[0].length)}},
       {$push: {names: message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */)[0].length)}},
-      (err) => {
+      {new: true},
+      (err, updated) => {
+        console.log(message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */)[0].length).length)
+        console.log(message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */)[0].length).length)
+        console.log(updated)
+
         if (err)
           message.channel.send(err).then(msg => {
             msg.delete(15000)
