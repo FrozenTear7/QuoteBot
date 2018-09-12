@@ -41,6 +41,8 @@ client.on('message', message => {
       server: message.channel.guild.name,
     })
 
+    console.log(newAuthor)
+
     const newQuote = new Quote({
       quote: message.content.match(/^".+"/)[0],
       author: newAuthor._id,
