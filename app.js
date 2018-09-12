@@ -52,7 +52,7 @@ client.on('message', message => {
       else if (author) {
         const newQuote = new Quote({
           quote: message.content.match(/^"[^"]+"/)[0],
-          author: author
+          author: author,
         })
 
         newQuote.save((err) => {
@@ -177,14 +177,9 @@ client.on('message', message => {
     })
   } else if (message.content.match(/^!alias *[^!]+ !is *.+/)) {
     Author.findOneAndUpdate(
-      {names: {$in: message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */)[0].length)}},
+      {names: {$in: message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */)[0].length, message.content.match(/^!alias *[^!]+/)[0].length - 1)}},
       {$push: {names: message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */)[0].length)}},
-      {new: true},
-      (err, updated) => {
-        console.log(message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */)[0].length).length)
-        console.log(message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */)[0].length).length)
-        console.log(updated)
-
+      (err) => {
         if (err)
           message.channel.send(err).then(msg => {
             msg.delete(15000)
