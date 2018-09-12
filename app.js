@@ -141,8 +141,8 @@ client.on('message', message => {
         )
     })
   } else if (message.content.match(/^!alias *[^!]+ !is *.+/)) {
-    console.log(message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */).length))
-    console.log(message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */).length))
+    console.log(message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */)[0].length))
+    console.log(message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */)[0].length))
 
     Author.findOneAndUpdate({
       names: {
