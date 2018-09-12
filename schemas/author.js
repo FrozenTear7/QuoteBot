@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const author = new mongoose.Schema({
-  name: {type: String, required: true},
+  names: [{type: String, required: true}],
   server: {type: String, required: true},
 })
 

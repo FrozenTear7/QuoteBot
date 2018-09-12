@@ -33,8 +33,11 @@ client.on('ready', () => {
 
 client.on('message', message => {
   if (message.content.match(/^".+" *~.+/)) {
+    let authorNames = []
+    authorNames.push(message.content.match(/~.+/)[0].substring(1))
+
     const newAuthor = new Author({
-      name: message.content.match(/~.+/)[0].substring(1),
+      names: authorNames,
       server: message.channel.guild.name,
     })
 
@@ -55,7 +58,7 @@ client.on('message', message => {
               msg.delete(10000)
             })
           else
-            message.channel.send('SAVED -> Quote: ' + message.content.match(/^".+"/)[0] + ', author: ' + message.content.match(/~.+/)[0].substring(1)).then(msg => {
+            message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + newAuthor.names[0]).then(msg => {
               msg.delete(10000)
             })
         })
@@ -70,14 +73,14 @@ client.on('message', message => {
 
     Author.findOne({
       server: message.channel.guild.name,
-      name: author,
+      names: {"$in": author},
     }, (err, author) => {
       if (err)
         message.channel.send(err).then(msg => {
           msg.delete(15000)
         })
       else
-        Quote.find({author: author._id}, 'quote', (err, quotes) => {
+        Quote.find({author: author._id}, (err, quotes) => {
           if (err)
             message.channel.send(err).then(msg => {
               msg.delete(15000)
@@ -88,18 +91,18 @@ client.on('message', message => {
                 msg.delete(15000)
               })
             else
-              message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))] + ' - ' + author[0].name)
+              message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))] + ' - ' + author.names[0])
           }
         })
     })
   } else if (message.content.match(/^!authors$/) || message.content.match(/^!a$/)) {
-    Author.find({server: message.channel.guild.name}, 'name', (err, authors) => {
+    Author.find({server: message.channel.guild.name}, (err, authors) => {
         if (err)
           message.channel.send(err).then(msg => {
             msg.delete(15000)
           })
         else if (authors.length > 0) {
-          message.channel.send(authors.map(author => author.name)).then(msg => {
+          message.channel.send(authors.map(author => author.names[0])).then(msg => {
             msg.delete(60000)
           })
         } else {
@@ -119,7 +122,7 @@ client.on('message', message => {
           msg.delete(15000)
         })
       else
-        Quote.find({author: author._id}, 'quote', (err, quotes) => {
+        Quote.find({author: author._id}, (err, quotes) => {
             if (err)
               message.channel.send(err).then(msg => {
                 msg.delete(15000)
