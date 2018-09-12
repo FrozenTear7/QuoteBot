@@ -65,7 +65,7 @@ client.on('message', message => {
               msg.delete(10000)
             })
         })
-      } else if (!author)
+      } else
         newAuthor.save((err) => {
           if (err)
             message.channel.send(err).then(msg => {
@@ -107,7 +107,7 @@ client.on('message', message => {
         message.channel.send(err).then(msg => {
           msg.delete(15000)
         })
-      else
+      else if (author)
         Quote.find({author: author._id}, (err, quotes) => {
           if (err)
             message.channel.send(err).then(msg => {
@@ -121,6 +121,10 @@ client.on('message', message => {
             else
               message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))].quote + ' - ' + author.names[0])
           }
+        })
+      else
+        message.channel.send('Author does not exist!').then(msg => {
+          msg.delete(15000)
         })
     })
   } else if (message.content.match(/^!authors$/) || message.content.match(/^!a$/)) {
@@ -149,7 +153,7 @@ client.on('message', message => {
         message.channel.send(err).then(msg => {
           msg.delete(15000)
         })
-      else
+      else if (author)
         Quote.find({author: author._id}, (err, quotes) => {
             if (err)
               message.channel.send(err).then(msg => {
@@ -166,10 +170,14 @@ client.on('message', message => {
             }
           },
         )
+      else
+        message.channel.send('Author does not exist!').then(msg => {
+          msg.delete(15000)
+        })
     })
   } else if (message.content.match(/^!alias *[^!]+ !is *.+/)) {
     Author.findOneAndUpdate(
-      {names: {$in: message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */)[0].length)}},
+      {$in: {names: message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */)[0].length)}},
       {$push: {names: message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */)[0].length)}},
       (err) => {
         if (err)
