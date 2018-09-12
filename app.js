@@ -140,6 +140,23 @@ client.on('message', message => {
           },
         )
     })
+  } else if (message.content.match(/^!alias *.+ !is *.+/)) {
+    Author.findOneAndUpdate({
+      names: {
+        '$in': message.content.match(/^!alias *.+/).substring(message.content.match(/^!alias */).length),
+        '$push': message.content.match(/!is *.+/).substring(message.content.match(/!is */).length),
+      },
+    }, (err) => {
+      if (err)
+        message.channel.send(err).then(msg => {
+          msg.delete(15000)
+        })
+      else {
+        message.channel.send('New alias set!').then(msg => {
+          msg.delete(15000)
+        })
+      }
+    })
   }
 })
 
