@@ -68,7 +68,7 @@ client.on('message', message => {
                 msg.delete(15000)
               })
             else
-              message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))].quote + ' ~' + quotes[Math.floor(Math.random() * (quotes.length))].author)
+              message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))].quote + ' - ' + quotes[Math.floor(Math.random() * (quotes.length))].author)
           }
         })
     else
