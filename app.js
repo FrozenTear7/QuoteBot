@@ -140,10 +140,10 @@ client.on('message', message => {
           },
         )
     })
-  } else if (message.content.match(/^!alias *[^+]+ !is *.+/)) {
+  } else if (message.content.match(/^!alias *[^!]+ !is *.+/)) {
     Author.findOneAndUpdate({
       names: {
-        '$in': message.content.match(/^!alias *[^+]+/)[0].substring(message.content.match(/^!alias */).length),
+        '$in': message.content.match(/^!alias *[^!]+/)[0].substring(message.content.match(/^!alias */).length),
         '$push': message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */).length),
       },
     }, (err) => {
