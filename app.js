@@ -31,9 +31,9 @@ client.on('ready', () => {
 })
 
 client.on('message', message => {
-  if (message.content.match(/".*" ~.*/)) {
+  if (message.content.match(/^".*" *~.*/)) {
     const newQuote = new Quote({
-      quote: message.content.match(/".*"/)[0],
+      quote: message.content.match(/^".*"/)[0],
       author: message.content.match(/~.*/)[0].substring(1),
       server: message.channel.guild.name,
     })
@@ -43,17 +43,17 @@ client.on('message', message => {
           msg.delete(10000)
         })
       else
-        message.channel.send('SAVED -> Quote: ' + message.content.match(/".*"/)[0] + ', author: ' + message.content.match(/~.*/)[0].substring(1)).then(msg => {
+        message.channel.send('SAVED -> Quote: ' + message.content.match(/^".*"/)[0] + ', author: ' + message.content.match(/~.*/)[0].substring(1)).then(msg => {
           msg.delete(10000)
         })
     })
-  } else if (message.content.match(/!quote .*/) || message.content.match(/!q .*/)) {
+  } else if (message.content.match(/^!quote *.*/) || message.content.match(/^!q *.*/)) {
     let author
 
-    if (message.content.match(/!quote .*/))
-      author = message.content.match(/!quote .*/)[0].substring(7)
-    else if (message.content.match(/!q .*/))
-      author = message.content.match(/!q .*/)[0].substring(3)
+    if (message.content.match(/^!quote *.*/))
+      author = message.content.match(/^!quote *.*/)[0].substring(7)
+    else if (message.content.match(/^!q *.*/))
+      author = message.content.match(/^!q *.*/)[0].substring(3)
 
     if (author)
       Quote.find({server: message.channel.guild.name, author: author})
@@ -68,7 +68,7 @@ client.on('message', message => {
                 msg.delete(15000)
               })
             else
-              message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))].quote)
+              message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))].quote + ' ~' + quotes[Math.floor(Math.random() * (quotes.length))].author)
           }
         })
     else
@@ -97,10 +97,10 @@ client.on('message', message => {
           }
         },
       )
-  } else if (message.content.match(/!all .*/)) {
+  } else if (message.content.match(/^!all *.*/)) {
     let authorQuotes = []
 
-    Quote.find({server: message.channel.guild.name, author: message.content.match(/!all .*/)[0].substring(5)})
+    Quote.find({server: message.channel.guild.name, author: message.content.match(/^!all *.*/)[0].substring(5)})
       .exec((err, quotes) => {
           if (err)
             message.channel.send(err).then(msg => {
