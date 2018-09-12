@@ -55,6 +55,9 @@ client.on('message', message => {
           author: author,
         })
 
+        console.log(author)
+        console.log(newQuote)
+
         newQuote.save((err) => {
           if (err)
             message.channel.send(err).then(msg => {
