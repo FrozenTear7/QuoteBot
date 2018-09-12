@@ -88,7 +88,7 @@ client.on('message', message => {
             msg.delete(15000)
           })
         else
-          message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))] + ' - ' + author.name)
+          message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))] + ' - ' + author[0].name)
       }
     })
   } else if (message.content.match(/!authors$/) || message.content.match(/!a$/)) {
