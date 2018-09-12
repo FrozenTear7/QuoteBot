@@ -77,64 +77,59 @@ client.on('message', message => {
       name: author,
     })
 
-    Quote.find({author: author._id}, (err, quotes) => {
+    Quote.find({author: author._id}, 'quote', (err, quotes) => {
+      if (err)
+        message.channel.send(err).then(msg => {
+          msg.delete(15000)
+        })
+      else {
+        if (quotes.length === 0)
+          message.channel.send('This author has no quotes yet!').then(msg => {
+            msg.delete(15000)
+          })
+        else
+          message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))] + ' - ' + author.name)
+      }
+    })
+  } else if (message.content.match(/!authors$/) || message.content.match(/!a$/)) {
+    Author.find({server: message.channel.guild.name}, 'name', (err, authors) => {
         if (err)
           message.channel.send(err).then(msg => {
             msg.delete(15000)
           })
-        else {
-          if (quotes.length === 0)
-            message.channel.send('This author has no quotes yet!').then(msg => {
-              msg.delete(15000)
-            })
-          else
-            message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))].quote + ' - ' + author.name)
+        else if (authors.length > 0) {
+          message.channel.send(authors).then(msg => {
+            msg.delete(60000)
+          })
+        } else {
+          message.channel.send('No authors available!').then(msg => {
+            msg.delete(15000)
+          })
         }
-      })
-  } else if (message.content.match(/!authors$/) || message.content.match(/!a$/)) {
-    Author.find({server: message.channel.guild.name}, 'name' , (err, authors) => {
-          if (err)
-            message.channel.send(err).then(msg => {
-              msg.delete(15000)
-            })
-          else if (authors.length > 0) {
-            message.channel.send(authors).then(msg => {
-              msg.delete(60000)
-            })
-          } else {
-            message.channel.send('No authors available!').then(msg => {
-              msg.delete(15000)
-            })
-          }
-        },
-      )
+      },
+    )
   } else if (message.content.match(/^!all *.+/)) {
-    let authorQuotes = []
-
     const author = Author.findOne({
       server: message.channel.guild.name,
       name: message.content.match(/^!all *.+/)[0].substring(message.content.match(/^!all */)[0].length),
     })
 
-    Quote.find({author: author._id}, (err, quotes) => {
-          if (err)
-            message.channel.send(err).then(msg => {
-              msg.delete(15000)
-            })
-          else if (quotes.length > 0) {
-            quotes.forEach(quote => {
-              authorQuotes.push(quote.quote)
-            })
-            message.channel.send(authorQuotes).then(msg => {
-              msg.delete(60000)
-            })
-          } else {
-            message.channel.send('No quotes available!').then(msg => {
-              msg.delete(15000)
-            })
-          }
-        },
-      )
+    Quote.find({author: author._id}, 'quote', (err, quotes) => {
+        if (err)
+          message.channel.send(err).then(msg => {
+            msg.delete(15000)
+          })
+        else if (quotes.length > 0) {
+          message.channel.send(quotes).then(msg => {
+            msg.delete(60000)
+          })
+        } else {
+          message.channel.send('No quotes available!').then(msg => {
+            msg.delete(15000)
+          })
+        }
+      },
+    )
   }
 })
 
