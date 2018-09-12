@@ -116,7 +116,7 @@ client.on('message', message => {
   } else if (message.content.match(/^!all *.+/)) {
     Author.findOne({
       server: message.channel.guild.name,
-      name: message.content.match(/^!all *.+/)[0].substring(message.content.match(/^!all */)[0].length),
+      names: {'$in': message.content.match(/^!all *.+/)[0].substring(message.content.match(/^!all */)[0].length)},
     }, (err, author) => {
       if (err)
         message.channel.send(err).then(msg => {
