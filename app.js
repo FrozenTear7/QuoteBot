@@ -77,8 +77,7 @@ client.on('message', message => {
       name: author,
     })
 
-    Quote.find({author: author._id})
-      .exec((err, quotes) => {
+    Quote.find({author: author._id}, (err, quotes) => {
         if (err)
           message.channel.send(err).then(msg => {
             msg.delete(15000)
@@ -93,8 +92,7 @@ client.on('message', message => {
         }
       })
   } else if (message.content.match(/!authors$/) || message.content.match(/!a$/)) {
-    Author.find({server: message.channel.guild.name})
-      .exec((err, authors) => {
+    Author.find({server: message.channel.guild.name}, 'name' , (err, authors) => {
           if (err)
             message.channel.send(err).then(msg => {
               msg.delete(15000)
@@ -118,8 +116,7 @@ client.on('message', message => {
       name: message.content.match(/^!all *.+/)[0].substring(message.content.match(/^!all */)[0].length),
     })
 
-    Quote.find({author: author._id})
-      .exec((err, quotes) => {
+    Quote.find({author: author._id}, (err, quotes) => {
           if (err)
             message.channel.send(err).then(msg => {
               msg.delete(15000)
