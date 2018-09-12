@@ -38,7 +38,7 @@ client.on('message', message => {
       names: {$in: message.content.match(/~.+/)[0].substring(1)},
     }, (err, author) => {
       if (err)
-        message.channel.send(err).then(msg => {
+        message.channel.send(err.errmsg).then(msg => {
           msg.delete(15000)
         })
       else if (author) {
@@ -48,18 +48,14 @@ client.on('message', message => {
         })
 
         newQuote.save((err) => {
-          console.log(err)
           if (err)
-            message.channel.send('xd').then(msg => {
+            message.channel.send(err.errmsg).then(msg => {
               msg.delete(15000)
             })
-          else {
-            console.log(newQuote.quote)
-            console.log(author.names[0])
+          else
             message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + author.names[0]).then(msg => {
               msg.delete(15000)
             })
-          }
         })
       } else {
         let authorNames = []
@@ -72,7 +68,7 @@ client.on('message', message => {
 
         newAuthor.save((err) => {
           if (err)
-            message.channel.send(err).then(msg => {
+            message.channel.send(err.errmsg).then(msg => {
               msg.delete(15000)
             })
           else {
@@ -83,7 +79,7 @@ client.on('message', message => {
 
             newQuote.save((err) => {
               if (err)
-                message.channel.send(err).then(msg => {
+                message.channel.send(err.errmsg).then(msg => {
                   msg.delete(15000)
                 })
               else
@@ -109,13 +105,13 @@ client.on('message', message => {
       names: {$in: author},
     }, (err, author) => {
       if (err)
-        message.channel.send(err).then(msg => {
+        message.channel.send(err.errmsg).then(msg => {
           msg.delete(15000)
         })
       else if (author)
         Quote.find({author: author._id}, (err, quotes) => {
           if (err)
-            message.channel.send(err).then(msg => {
+            message.channel.send(err.errmsg).then(msg => {
               msg.delete(15000)
             })
           else {
@@ -135,7 +131,7 @@ client.on('message', message => {
   } else if (message.content.match(/^!authors$/) || message.content.match(/^!a$/)) {
     Author.find({server: message.channel.guild.name}, (err, authors) => {
         if (err)
-          message.channel.send(err).then(msg => {
+          message.channel.send(err.errmsg).then(msg => {
             msg.delete(15000)
           })
         else if (authors.length > 0) {
@@ -155,13 +151,13 @@ client.on('message', message => {
       names: {$in: message.content.match(/^!all *.+/)[0].substring(message.content.match(/^!all */)[0].length)},
     }, (err, author) => {
       if (err)
-        message.channel.send(err).then(msg => {
+        message.channel.send(err.errmsg).then(msg => {
           msg.delete(15000)
         })
       else if (author)
         Quote.find({author: author._id}, (err, quotes) => {
             if (err)
-              message.channel.send(err).then(msg => {
+              message.channel.send(err.errmsg).then(msg => {
                 msg.delete(15000)
               })
             else if (quotes.length > 0) {
@@ -186,7 +182,7 @@ client.on('message', message => {
       {$push: {names: message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */)[0].length)}},
       (err) => {
         if (err)
-          message.channel.send(err).then(msg => {
+          message.channel.send(err.errmsg).then(msg => {
             msg.delete(15000)
           })
         else {
