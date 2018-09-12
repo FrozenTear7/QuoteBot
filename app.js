@@ -33,21 +33,13 @@ client.on('ready', () => {
 
 client.on('message', message => {
   if (message.content.match(/^"[^"]+" *~.+/)) {
-    let authorNames = []
-    authorNames.push(message.content.match(/~.+/)[0].substring(1))
-
-    const newAuthor = new Author({
-      names: authorNames,
-      server: message.channel.guild.name,
-    })
-
     Author.findOne({
       server: message.channel.guild.name,
       names: {$in: message.content.match(/~.+/)[0].substring(1)},
     }, (err, author) => {
       if (err)
         message.channel.send(err).then(msg => {
-          msg.delete(10000)
+          msg.delete(15000)
         })
       else if (author) {
         const newQuote = new Quote({
@@ -55,24 +47,29 @@ client.on('message', message => {
           author: author,
         })
 
-        console.log(author)
-        console.log(newQuote)
-
         newQuote.save((err) => {
           if (err)
             message.channel.send(err).then(msg => {
-              msg.delete(10000)
+              msg.delete(15000)
             })
           else
             message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + author.names[0]).then(msg => {
-              msg.delete(10000)
+              msg.delete(15000)
             })
         })
-      } else
+      } else {
+        let authorNames = []
+        authorNames.push(message.content.match(/~.+/)[0].substring(1))
+
+        const newAuthor = new Author({
+          names: authorNames,
+          server: message.channel.guild.name,
+        })
+
         newAuthor.save((err) => {
           if (err)
             message.channel.send(err).then(msg => {
-              msg.delete(10000)
+              msg.delete(15000)
             })
           else {
             const newQuote = new Quote({
@@ -83,17 +80,18 @@ client.on('message', message => {
             newQuote.save((err) => {
               if (err)
                 message.channel.send(err).then(msg => {
-                  msg.delete(10000)
+                  msg.delete(15000)
                 })
               else
                 message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + newAuthor.names[0]).then(msg => {
-                  msg.delete(10000)
+                  msg.delete(15000)
                 })
             })
           }
-        })
-    })
 
+        })
+      }
+    })
   } else if (message.content.match(/^!quote *.+/) || message.content.match(/^!q *.+/)) {
     let author
 
