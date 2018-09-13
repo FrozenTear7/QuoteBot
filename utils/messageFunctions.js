@@ -9,6 +9,20 @@ const replyError = (message, err) => {
   })
 }
 
+const replyInfo = (message, text) => {
+  message.channel.send(text).then(msg => {
+    msg.delete(timers.fastTimer)
+  })
+}
+
+const replyData = (message, data) => {
+  message.channel.send(data).then(msg => {
+    msg.delete(timers.longTimer)
+  })
+}
+
 module.exports = {
   replyError: replyError(),
+  replyInfo: replyInfo(),
+  replyData: replyData(),
 }

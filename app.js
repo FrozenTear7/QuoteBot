@@ -75,9 +75,7 @@ client.on('message', message => {
 
             newQuote.save((err) => {
               if (err)
-                message.channel.send(err.errmsg).then(msg => {
-                  msg.delete(15000)
-                })
+                messageFunctions.replyError(message, err)
               else
                 message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + newAuthor.names[0]).then(msg => {
                   msg.delete(15000)
@@ -124,15 +122,10 @@ client.on('message', message => {
     Author.find({server: message.channel.guild.name}, (err, authors) => {
         if (err)
           messageFunctions.replyError(err)
-        else if (authors.length > 0) {
-          message.channel.send(authors.map(author => author.names[0])).then(msg => {
-            msg.delete(60000)
-          })
-        } else {
-          message.channel.send('No authors available!').then(msg => {
-            msg.delete(15000)
-          })
-        }
+        else if (authors.length > 0)
+          messageFunctions.replyData(message, authors.map(author => author.names[0]))
+        else
+          messageFunctions.replyInfo(message, 'No authors available!')
       },
     )
   } else if (message.content.match(/^!all *.+/)) {
