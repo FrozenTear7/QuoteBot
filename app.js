@@ -6,7 +6,7 @@ const Author = require('./schemas/author')
 const express = require('express')
 const https = require('https')
 
-import { replyError } from './utils/messageFunctions'
+const messageFunctions = require('./utils/messageFunctions')
 
 const app = express()
 
@@ -40,7 +40,7 @@ client.on('message', message => {
       names: {$in: message.content.match(/~.+/)[0].substring(1)},
     }, (err, author) => {
       if (err)
-        replyError(err)
+        messageFunctions.replyError(err)
       else if (author) {
         const newQuote = new Quote({
           quote: message.content.match(/^"[^"]+"/)[0],
@@ -49,7 +49,7 @@ client.on('message', message => {
 
         newQuote.save((err) => {
           if (err)
-            replyError(err)
+            messageFunctions.replyError(err)
           else
             message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + author.names[0]).then(msg => {
               msg.delete(15000)
@@ -66,7 +66,7 @@ client.on('message', message => {
 
         newAuthor.save((err) => {
           if (err)
-            replyError(err)
+            messageFunctions.replyError(err)
           else {
             const newQuote = new Quote({
               quote: message.content.match(/^"[^"]+"/)[0],
@@ -101,11 +101,11 @@ client.on('message', message => {
       names: {$in: author},
     }, (err, author) => {
       if (err)
-        replyError(err)
+        messageFunctions.replyError(err)
       else if (author)
         Quote.find({author: author._id}, (err, quotes) => {
           if (err)
-            replyError(err)
+            messageFunctions.replyError(err)
           else {
             if (quotes.length === 0)
               message.channel.send('This author has no quotes yet!').then(msg => {
@@ -123,7 +123,7 @@ client.on('message', message => {
   } else if (message.content.match(/^!authors$/) || message.content.match(/^!a$/)) {
     Author.find({server: message.channel.guild.name}, (err, authors) => {
         if (err)
-          replyError(err)
+          messageFunctions.replyError(err)
         else if (authors.length > 0) {
           message.channel.send(authors.map(author => author.names[0])).then(msg => {
             msg.delete(60000)
@@ -147,7 +147,7 @@ client.on('message', message => {
       else if (author)
         Quote.find({author: author._id}, (err, quotes) => {
             if (err)
-              replyError(err)
+              messageFunctions.replyError(err)
             else if (quotes.length > 0) {
               message.channel.send(quotes.map(quote => quote.quote)).then(msg => {
                 msg.delete(60000)
@@ -170,7 +170,7 @@ client.on('message', message => {
       {$push: {names: message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */)[0].length)}},
       (err) => {
         if (err)
-          replyError(err)
+          messageFunctions.replyError(err)
         else {
           message.channel.send('New alias set!').then(msg => {
             msg.delete(15000)
@@ -183,7 +183,7 @@ client.on('message', message => {
       names: {$in: message.content.match(/^!aliases *.+/)[0].substring(message.content.match(/^!aliases */)[0].length)},
     }, (err, author) => {
       if (err)
-        replyError(err)
+        messageFunctions.replyError(err)
       else if (author)
         message.channel.send(author.names).then(msg => {
           msg.delete(15000)
