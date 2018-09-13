@@ -3,7 +3,7 @@ const timers = {
   longTimer: 60000,
 }
 
-const replyError = (err) => {
+const replyError = (message, err) => {
   message.channel.send(err.errmsg).then(msg => {
     msg.delete(timers.fastTimer)
   })

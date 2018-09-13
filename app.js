@@ -49,7 +49,7 @@ client.on('message', message => {
 
         newQuote.save((err) => {
           if (err)
-            messageFunctions.replyError(err)
+            messageFunctions.replyError(message, err)
           else
             message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + author.names[0]).then(msg => {
               msg.delete(15000)
