@@ -54,7 +54,7 @@ client.on('message', message => {
               msg.delete(15000)
             })
           else
-            message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + author.names[0]).then(msg => {
+            message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + author.names[0] + ', authorId: ' + author._id).then(msg => {
               msg.delete(15000)
             })
         })
@@ -84,7 +84,7 @@ client.on('message', message => {
                   msg.delete(15000)
                 })
               else
-                message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + newAuthor.names[0]).then(msg => {
+                message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + newAuthor.names[0] + ', authorId: ' + newAuthor._id).then(msg => {
                   msg.delete(15000)
                 })
             })
@@ -121,7 +121,8 @@ client.on('message', message => {
                 msg.delete(15000)
               })
             else
-              message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))].quote + ' - ' + author.names[0])
+              message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))].quote + ' - ' + author.names[0]
+                + ', quoteId: ' + quotes[Math.floor(Math.random() * (quotes.length))]._id + ', authorId: ' + author._id)
           }
         })
       else
@@ -136,7 +137,7 @@ client.on('message', message => {
             msg.delete(15000)
           })
         else if (authors.length > 0) {
-          message.channel.send(authors.map(author => author.names[0])).then(msg => {
+          message.channel.send(authors.map(author => author.names[0] + ', authorId: ' + author._id)).then(msg => {
             msg.delete(60000)
           })
         } else {
@@ -162,7 +163,7 @@ client.on('message', message => {
                 msg.delete(15000)
               })
             else if (quotes.length > 0) {
-              message.channel.send(quotes.map(quote => quote.quote)).then(msg => {
+              message.channel.send(quotes.map(quote => quote.quote + ', quoteId: ' + quote._id)).then(msg => {
                 msg.delete(60000)
               })
             } else {
@@ -211,17 +212,26 @@ client.on('message', message => {
         })
     })
   } else if (message.content.match(/^!!h/)) {
-    message.channel.send({embed: {
+    message.channel.send({
+      embed: {
         color: 3447003,
         title: 'Bot commands:',
         fields: [
-          { name: '!quote *author* / !q *author*', value: 'Returns a random quote from the author and the server the command is written from', inline: true},
-          { name: '!authors / !a', value: 'Returns all authors, that have quotes on the server', inline: true},
-          { name: '!all *author*', value: 'Returns all quotes from that author', inline: true},
-          { name: '!alias *author* !is *new alias*', value: 'Add a new alias for the author (*author* can be any alias of that author)', inline: true},
-          { name: '!aliases *author*', value: 'Returns all aliases of that author', inline: true}
-        ]
-      }
+          {
+            name: '!quote *author* / !q *author*',
+            value: 'Returns a random quote from the author and the server the command is written from',
+            inline: true,
+          },
+          {name: '!authors / !a', value: 'Returns all authors, that have quotes on the server', inline: true},
+          {name: '!all *author*', value: 'Returns all quotes from that author', inline: true},
+          {
+            name: '!alias *author* !is *new alias*',
+            value: 'Add a new alias for the author (*author* can be any alias of that author)',
+            inline: true,
+          },
+          {name: '!aliases *author*', value: 'Returns all aliases of that author', inline: true},
+        ],
+      },
     })
   }
 })
