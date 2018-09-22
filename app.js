@@ -332,11 +332,9 @@ client.on('message', message => {
         let fields = []
 
         author.names.forEach(name => fields.push({
-          name: name,
-          inline: true,
+          name: 'Alias',
+          value: name
         }))
-
-        console.log(fields)
 
         message.channel.send({
           embed: {
