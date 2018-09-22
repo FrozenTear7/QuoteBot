@@ -455,12 +455,12 @@ client.on('message', message => {
           })
         }
       })
-    } else if (message.content.match(/^!dal *.+/)) {
+    } else if (message.content.match(/^!dl *.+/)) {
       console.log('xd')
-      console.log(message.content.match(/^!dal *.+/)[0].substring(message.content.match(/^!dal */)[0].length))
+      console.log(message.content.match(/^!dl *.+/)[0].substring(message.content.match(/^!dl *.+/)[0].length))
       Author.findOne({
         server: message.channel.guild.name,
-        names: {$in: message.content.match(/^!dal *.+/)[0].substring(message.content.match(/^!dal */)[0].length)},
+        names: {$in: message.content.match(/^!dl *.+/)[0].substring(message.content.match(/^!dl *.+/)[0].length)},
       }, (err, author) => {
         console.log(author)
         if (err)
@@ -487,9 +487,9 @@ client.on('message', message => {
             Author.findOneAndUpdate(
               {
                 server: message.channel.guild.name,
-                names: {$in: message.content.match(/^!dal *.+/)[0].substring(message.content.match(/^!dal */)[0].length)},
+                names: {$in: message.content.match(/^!dl *.+/)[0].substring(message.content.match(/^!dl */)[0].length)},
               },
-              {$pull: {names: message.content.match(/^!dal *.+/)[0].substring(message.content.match(/^!dal */)[0].length)}},
+              {$pull: {names: message.content.match(/^!dl *.+/)[0].substring(message.content.match(/^!dl */)[0].length)}},
               (err) => {
                 if (err)
                   message.channel.send({
