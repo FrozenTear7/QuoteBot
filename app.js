@@ -216,7 +216,20 @@ client.on('message', message => {
             msg.delete(15000)
           })
         else if (authors.length > 0) {
-          message.channel.send(authors.map(author => author.names[0] + ', authorId: ' + author._id)).then(msg => {
+          let fields = []
+
+          authors.forEach(author => fields.push({
+            name: author.names[0],
+            value: 'authorId: ' + author._id,
+          }))
+
+          message.channel.send({
+            embed: {
+              color: 3447003,
+              title: 'Authors',
+              fields: fields,
+            },
+          }).then(msg => {
             msg.delete(60000)
           })
         } else {
@@ -268,7 +281,7 @@ client.on('message', message => {
                 embed: {
                   color: 3447003,
                   title: 'All author quotes',
-                  fields: fields
+                  fields: fields,
                 },
               }).then(msg => {
                 msg.delete(60000)
