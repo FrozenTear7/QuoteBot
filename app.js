@@ -332,7 +332,6 @@ client.on('message', message => {
         let fields = []
 
         author.names.forEach(name => fields.push({
-          name: 'Alias',
           value: name
         }))
 
