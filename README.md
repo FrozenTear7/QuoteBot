@@ -12,6 +12,7 @@ The quotes are connected to the server from which they were read.
 * !alias **author** !is **newAlias** - sets a new alias for **author**
 * !dq **quoteId** - deletes the quote
 * !da **authorId** - deletes the author and author's quotes
+* !dal **alias** - deletes author's alias
 
 ## Author
 [Paweł Mendroch](https://github.com/FrozenTear7), under MIT license

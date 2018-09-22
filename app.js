@@ -479,7 +479,8 @@ client.on('message', message => {
             }).then(msg => {
               msg.delete(15000)
             })
-          else
+          else {
+            console.log('xd')
             Author.findOneAndUpdate(
               {
                 server: message.channel.guild.name,
@@ -507,6 +508,7 @@ client.on('message', message => {
                   })
                 }
               })
+          }
         } else
           message.channel.send({
             embed: {
@@ -541,6 +543,7 @@ client.on('message', message => {
             {name: '!aliases *author*', value: 'Returns all aliases of that author'},
             {name: '!dq *quoteId*', value: 'Deletes the quote'},
             {name: '!da *authorId*', value: 'Deletes the author and author\'s quotes'},
+            {name: '!dal *alias*', value: 'Deletes author\'s alias'},
             {name: 'Bot\'s author', value: '[Paweł Mendroch](https://github.com/FrozenTear7), under MIT license'},
           ],
         },
