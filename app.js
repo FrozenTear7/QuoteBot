@@ -457,10 +457,10 @@ client.on('message', message => {
       })
     } else if (message.content.match(/^!dl *.+/)) {
       console.log('xd')
-      console.log(message.content.match(/^!dl *.+/)[0].substring(message.content.match(/^!dl *.+/)[0].length))
+      console.log(message.content.match(/^!dl *.+/)[0].substring(message.content.match(/^!dl */)[0].length))
       Author.findOne({
         server: message.channel.guild.name,
-        names: {$in: message.content.match(/^!dl *.+/)[0].substring(message.content.match(/^!dl *.+/)[0].length)},
+        names: {$in: message.content.match(/^!dl *.+/)[0].substring(message.content.match(/^!dl */)[0].length)},
       }, (err, author) => {
         console.log(author)
         if (err)
