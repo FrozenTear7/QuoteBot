@@ -329,17 +329,15 @@ client.on('message', message => {
           msg.delete(15000)
         })
       else if (author) {
-        let fields = []
+        let description = ''
 
-        author.names.forEach(name => fields.push({
-          value: name
-        }))
+        author.names.forEach(name => description += '* ' + name + '\n')
 
         message.channel.send({
           embed: {
             color: 3447003,
             title: 'Aliases',
-            fields: fields,
+            description: description,
           },
         }).then(msg => {
           msg.delete(15000)
