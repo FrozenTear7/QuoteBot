@@ -39,7 +39,19 @@ client.on('message', message => {
       names: {$in: message.content.match(/~.+/)[0].substring(1)},
     }, (err, author) => {
       if (err)
-        message.channel.send(err.errmsg).then(msg => {
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            title: 'Error',
+            fields: [
+              {
+                name: 'Error message',
+                value: err.errmsg,
+                inline: true,
+              },
+            ],
+          },
+        }).then(msg => {
           msg.delete(15000)
         })
       else if (author) {
@@ -50,7 +62,19 @@ client.on('message', message => {
 
         newQuote.save((err) => {
           if (err)
-            message.channel.send(err.errmsg).then(msg => {
+            message.channel.send({
+              embed: {
+                color: 3447003,
+                title: 'Error',
+                fields: [
+                  {
+                    name: 'Error message',
+                    value: err.errmsg,
+                    inline: true,
+                  },
+                ],
+              },
+            }).then(msg => {
               msg.delete(15000)
             })
           else
@@ -69,7 +93,19 @@ client.on('message', message => {
 
         newAuthor.save((err) => {
           if (err)
-            message.channel.send(err.errmsg).then(msg => {
+            message.channel.send({
+              embed: {
+                color: 3447003,
+                title: 'Error',
+                fields: [
+                  {
+                    name: 'Error message',
+                    value: err.errmsg,
+                    inline: true,
+                  },
+                ],
+              },
+            }).then(msg => {
               msg.delete(15000)
             })
           else {
@@ -80,16 +116,39 @@ client.on('message', message => {
 
             newQuote.save((err) => {
               if (err)
-                message.channel.send(err.errmsg).then(msg => {
+                message.channel.send({
+                  embed: {
+                    color: 3447003,
+                    title: 'Error',
+                    fields: [
+                      {
+                        name: 'Error message',
+                        value: err.errmsg,
+                        inline: true,
+                      },
+                    ],
+                  },
+                }).then(msg => {
                   msg.delete(15000)
                 })
               else
-                message.channel.send('SAVED -> Quote: ' + newQuote.quote + ', author: ' + newAuthor.names[0] + ', authorId: ' + newAuthor._id).then(msg => {
+                message.channel.send({
+                  embed: {
+                    color: 3447003,
+                    title: 'Saved',
+                    fields: [
+                      {
+                        name: 'Quote: ' + newQuote.quote + ', author: ' + newAuthor.names[0],
+                        value: 'quoteId: ' + newQuote._id + ', authorId: ' + newAuthor._id,
+                        inline: true,
+                      },
+                    ],
+                  },
+                }).then(msg => {
                   msg.delete(15000)
                 })
             })
           }
-
         })
       }
     })
@@ -106,18 +165,54 @@ client.on('message', message => {
       names: {$in: author},
     }, (err, author) => {
       if (err)
-        message.channel.send(err.errmsg).then(msg => {
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            title: 'Error',
+            fields: [
+              {
+                name: 'Error message',
+                value: err.errmsg,
+                inline: true,
+              },
+            ],
+          },
+        }).then(msg => {
           msg.delete(15000)
         })
       else if (author)
         Quote.find({author: author._id}, (err, quotes) => {
           if (err)
-            message.channel.send(err.errmsg).then(msg => {
+            message.channel.send({
+              embed: {
+                color: 3447003,
+                title: 'Error',
+                fields: [
+                  {
+                    name: 'Error message',
+                    value: err.errmsg,
+                    inline: true,
+                  },
+                ],
+              },
+            }).then(msg => {
               msg.delete(15000)
             })
           else {
             if (quotes.length === 0)
-              message.channel.send('This author has no quotes yet!').then(msg => {
+              message.channel.send({
+                embed: {
+                  color: 3447003,
+                  title: 'Info',
+                  fields: [
+                    {
+                      name: 'Info message',
+                      value: 'This author has no quotes yet!',
+                      inline: true,
+                    },
+                  ],
+                },
+              }).then(msg => {
                 msg.delete(15000)
               })
             else
@@ -137,14 +232,38 @@ client.on('message', message => {
           }
         })
       else
-        message.channel.send('Author does not exist!').then(msg => {
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            title: 'Info',
+            fields: [
+              {
+                name: 'Info message',
+                value: 'This author does not exist!',
+                inline: true,
+              },
+            ],
+          },
+        }).then(msg => {
           msg.delete(15000)
         })
     })
   } else if (message.content.match(/^!authors$/) || message.content.match(/^!a$/)) {
     Author.find({server: message.channel.guild.name}, (err, authors) => {
         if (err)
-          message.channel.send(err.errmsg).then(msg => {
+          message.channel.send({
+            embed: {
+              color: 3447003,
+              title: 'Error',
+              fields: [
+                {
+                  name: 'Error message',
+                  value: err.errmsg,
+                  inline: true,
+                },
+              ],
+            },
+          }).then(msg => {
             msg.delete(15000)
           })
         else if (authors.length > 0) {
@@ -152,7 +271,19 @@ client.on('message', message => {
             msg.delete(60000)
           })
         } else {
-          message.channel.send('No authors available!').then(msg => {
+          message.channel.send({
+            embed: {
+              color: 3447003,
+              title: 'Info',
+              fields: [
+                {
+                  name: 'Info message',
+                  value: 'No authors available!',
+                  inline: true,
+                },
+              ],
+            },
+          }).then(msg => {
             msg.delete(15000)
           })
         }
@@ -164,13 +295,37 @@ client.on('message', message => {
       names: {$in: message.content.match(/^!all *.+/)[0].substring(message.content.match(/^!all */)[0].length)},
     }, (err, author) => {
       if (err)
-        message.channel.send(err.errmsg).then(msg => {
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            title: 'Error',
+            fields: [
+              {
+                name: 'Error message',
+                value: err.errmsg,
+                inline: true,
+              },
+            ],
+          },
+        }).then(msg => {
           msg.delete(15000)
         })
       else if (author)
         Quote.find({author: author._id}, (err, quotes) => {
             if (err)
-              message.channel.send(err.errmsg).then(msg => {
+              message.channel.send({
+                embed: {
+                  color: 3447003,
+                  title: 'Error',
+                  fields: [
+                    {
+                      name: 'Error message',
+                      value: err.errmsg,
+                      inline: true,
+                    },
+                  ],
+                },
+              }).then(msg => {
                 msg.delete(15000)
               })
             else if (quotes.length > 0) {
@@ -178,14 +333,38 @@ client.on('message', message => {
                 msg.delete(60000)
               })
             } else {
-              message.channel.send('No quotes available!').then(msg => {
+              message.channel.send({
+                embed: {
+                  color: 3447003,
+                  title: 'Info',
+                  fields: [
+                    {
+                      name: 'Info message',
+                      value: 'No quotes available!',
+                      inline: true,
+                    },
+                  ],
+                },
+              }).then(msg => {
                 msg.delete(15000)
               })
             }
           },
         )
       else
-        message.channel.send('Author does not exist!').then(msg => {
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            title: 'Info',
+            fields: [
+              {
+                name: 'Info message',
+                value: 'Author does not exist!',
+                inline: true,
+              },
+            ],
+          },
+        }).then(msg => {
           msg.delete(15000)
         })
     })
@@ -195,11 +374,35 @@ client.on('message', message => {
       {$push: {names: message.content.match(/!is *.+/)[0].substring(message.content.match(/!is */)[0].length)}},
       (err) => {
         if (err)
-          message.channel.send(err.errmsg).then(msg => {
+          message.channel.send({
+            embed: {
+              color: 3447003,
+              title: 'Error',
+              fields: [
+                {
+                  name: 'Error message',
+                  value: err.errmsg,
+                  inline: true,
+                },
+              ],
+            },
+          }).then(msg => {
             msg.delete(15000)
           })
         else {
-          message.channel.send('New alias set!').then(msg => {
+          message.channel.send({
+            embed: {
+              color: 3447003,
+              title: 'Info',
+              fields: [
+                {
+                  name: 'Info message',
+                  value: 'New alias set!',
+                  inline: true,
+                },
+              ],
+            },
+          }).then(msg => {
             msg.delete(15000)
           })
         }
@@ -210,43 +413,140 @@ client.on('message', message => {
       names: {$in: message.content.match(/^!aliases *.+/)[0].substring(message.content.match(/^!aliases */)[0].length)},
     }, (err, author) => {
       if (err)
-        message.channel.send(err.errmsg).then(msg => {
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            title: 'Error',
+            fields: [
+              {
+                name: 'Error message',
+                value: err.errmsg,
+                inline: true,
+              },
+            ],
+          },
+        }).then(msg => {
           msg.delete(15000)
         })
-      else if (author)
-        message.channel.send(author.names).then(msg => {
+      else if (author) {
+        let fields = []
+
+        author.names.forEach(name => fields.push({
+          name: name,
+          inline: true,
+        }))
+
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            title: 'Aliases',
+            fields: fields,
+          },
+        }).then(msg => {
           msg.delete(15000)
         })
-      else
-        message.channel.send('Author does not exist!').then(msg => {
+      } else
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            title: 'Info',
+            fields: [
+              {
+                name: 'Info message',
+                value: 'Author does not exist!',
+                inline: true,
+              },
+            ],
+          },
+        }).then(msg => {
           msg.delete(15000)
         })
     })
   } else if (message.content.match(/^!dq *.+/)) {
     Quote.deleteOne({_id: message.content.match(/^!dq *.+/)[0].substring(message.content.match(/^!dq */)[0].length)}, (err) => {
       if (err)
-        message.channel.send(err.errmsg).then(msg => {
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            title: 'Error',
+            fields: [
+              {
+                name: 'Error message',
+                value: err.errmsg,
+                inline: true,
+              },
+            ],
+          },
+        }).then(msg => {
           msg.delete(15000)
         })
       else
-        message.channel.send('Quote deleted!').then(msg => {
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            title: 'Info',
+            fields: [
+              {
+                name: 'Info message',
+                value: 'Quote deleted!',
+                inline: true,
+              },
+            ],
+          },
+        }).then(msg => {
           msg.delete(15000)
         })
     })
   } else if (message.content.match(/^!da *.+/)) {
     Quote.deleteMany({author: message.content.match(/^!da *.+/)[0].substring(message.content.match(/^!da */)[0].length)}, (err) => {
       if (err)
-        message.channel.send(err.errmsg).then(msg => {
+        message.channel.send({
+          embed: {
+            color: 3447003,
+            title: 'Error',
+            fields: [
+              {
+                name: 'Error message',
+                value: err.errmsg,
+                inline: true,
+              },
+            ],
+          },
+        }).then(msg => {
           msg.delete(15000)
         })
       else {
         Author.deleteOne({_id: message.content.match(/^!da *.+/)[0].substring(message.content.match(/^!da */)[0].length)}, (err) => {
           if (err)
-            message.channel.send(err.errmsg).then(msg => {
+            message.channel.send({
+              embed: {
+                color: 3447003,
+                title: 'Error',
+                fields: [
+                  {
+                    name: 'Error message',
+                    value: err.errmsg,
+                    inline: true,
+                  },
+                ],
+              },
+            }).then(msg => {
               msg.delete(15000)
             })
           else
-            message.channel.send('Author and quotes deleted!').then(msg => {
+            message.channel.send({
+              embed: {
+                color: 3447003,
+                title: 'Info',
+                fields: [
+                  {
+                    name: 'Info message',
+                    value: 'Author and quotes deleted!',
+                    inline: true,
+                  },
+                ],
+              },
+            }).then(msg => {
               msg.delete(15000)
             })
         })
@@ -258,6 +558,11 @@ client.on('message', message => {
         color: 3447003,
         title: 'Bot commands:',
         fields: [
+          {
+            name: '\'*quote*\' ~*author*',
+            value: 'Adds a quote by given author (can be any author\'s alias)',
+            inline: true,
+          },
           {
             name: '!quote *author* / !q *author*',
             value: 'Returns a random quote from the author and the server the command is written from',
