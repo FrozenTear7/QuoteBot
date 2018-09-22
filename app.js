@@ -456,6 +456,7 @@ client.on('message', message => {
         }
       })
     } else if (message.content.match(/^!dal *.+/)) {
+      console.log('xd')
       console.log(message.content.match(/^!dal *.+/)[0].substring(message.content.match(/^!dal */)[0].length))
       Author.findOne({
         server: message.channel.guild.name,
