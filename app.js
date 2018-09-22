@@ -121,8 +121,19 @@ client.on('message', message => {
                 msg.delete(15000)
               })
             else
-              message.channel.send(quotes[Math.floor(Math.random() * (quotes.length))].quote + ' - ' + author.names[0]
-                + ', quoteId: ' + quotes[Math.floor(Math.random() * (quotes.length))]._id + ', authorId: ' + author._id)
+              message.channel.send({
+                embed: {
+                  color: 3447003,
+                  title: 'Quote',
+                  fields: [
+                    {
+                      name: quotes[Math.floor(Math.random() * (quotes.length))].quote + ' - ' + author.names[0],
+                      value: 'quoteId: ' + quotes[Math.floor(Math.random() * (quotes.length))]._id + ', authorId: ' + author._id,
+                      inline: true,
+                    },
+                  ],
+                },
+              })
           }
         })
       else
@@ -210,6 +221,36 @@ client.on('message', message => {
         message.channel.send('Author does not exist!').then(msg => {
           msg.delete(15000)
         })
+    })
+  } else if (message.content.match(/^!dq *.+/)) {
+    Quote.deleteOne({_id: message.content.match(/^!dq *.+/)[0].substring(message.content.match(/^!dq */)[0].length)}, (err) => {
+      if (err)
+        message.channel.send(err.errmsg).then(msg => {
+          msg.delete(15000)
+        })
+      else
+        message.channel.send('Quote deleted!').then(msg => {
+          msg.delete(15000)
+        })
+    })
+  } else if (message.content.match(/^!da *.+/)) {
+    Quote.deleteMany({author: message.content.match(/^!da *.+/)[0].substring(message.content.match(/^!da */)[0].length)}, (err) => {
+      if (err)
+        message.channel.send(err.errmsg).then(msg => {
+          msg.delete(15000)
+        })
+      else {
+        Author.deleteOne({_id: message.content.match(/^!da *.+/)[0].substring(message.content.match(/^!da */)[0].length)}, (err) => {
+          if (err)
+            message.channel.send(err.errmsg).then(msg => {
+              msg.delete(15000)
+            })
+          else
+            message.channel.send('Author and quotes deleted!').then(msg => {
+              msg.delete(15000)
+            })
+        })
+      }
     })
   } else if (message.content.match(/^!!h/)) {
     message.channel.send({
