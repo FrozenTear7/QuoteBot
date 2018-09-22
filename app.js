@@ -42,7 +42,7 @@ client.on('message', message => {
         message.channel.send({
           embed: {
             color: 3447003,
-            description: err.errmsg
+            description: err.errmsg,
           },
         }).then(msg => {
           msg.delete(15000)
@@ -58,7 +58,7 @@ client.on('message', message => {
             message.channel.send({
               embed: {
                 color: 3447003,
-                description: err.errmsg
+                description: err.errmsg,
               },
             }).then(msg => {
               msg.delete(15000)
@@ -70,8 +70,8 @@ client.on('message', message => {
                 title: 'Saved',
                 fields: [
                   {
-                    name: 'Quote: ' + newQuote.quote + ', author: ' + newAuthor.names[0],
-                    value: 'quoteId: ' + newQuote._id + ', authorId: ' + newAuthor._id,
+                    name: 'Quote: ' + newQuote.quote + ', author: ' + author.names[0],
+                    value: 'quoteId: ' + newQuote._id + ', authorId: ' + author._id,
                     inline: true,
                   },
                 ],
@@ -94,7 +94,7 @@ client.on('message', message => {
             message.channel.send({
               embed: {
                 color: 3447003,
-                description: err.errmsg
+                description: err.errmsg,
               },
             }).then(msg => {
               msg.delete(15000)
@@ -110,7 +110,7 @@ client.on('message', message => {
                 message.channel.send({
                   embed: {
                     color: 3447003,
-                    description: err.errmsg
+                    description: err.errmsg,
                   },
                 }).then(msg => {
                   msg.delete(15000)
@@ -152,7 +152,7 @@ client.on('message', message => {
         message.channel.send({
           embed: {
             color: 3447003,
-            description: err.errmsg
+            description: err.errmsg,
           },
         }).then(msg => {
           msg.delete(15000)
@@ -163,7 +163,7 @@ client.on('message', message => {
             message.channel.send({
               embed: {
                 color: 3447003,
-                description: err.errmsg
+                description: err.errmsg,
               },
             }).then(msg => {
               msg.delete(15000)
@@ -206,15 +206,15 @@ client.on('message', message => {
     })
   } else if (message.content.match(/^!authors$/) || message.content.match(/^!a$/)) {
     Author.find({server: message.channel.guild.name}, (err, authors) => {
-      if (err)
-        message.channel.send({
-          embed: {
-            color: 3447003,
-            description: err.errmsg
-          },
-        }).then(msg => {
-          msg.delete(15000)
-        })
+        if (err)
+          message.channel.send({
+            embed: {
+              color: 3447003,
+              description: err.errmsg,
+            },
+          }).then(msg => {
+            msg.delete(15000)
+          })
         else if (authors.length > 0) {
           message.channel.send(authors.map(author => author.names[0] + ', authorId: ' + author._id)).then(msg => {
             msg.delete(60000)
@@ -257,7 +257,20 @@ client.on('message', message => {
                 msg.delete(15000)
               })
             else if (quotes.length > 0) {
-              message.channel.send(quotes.map(quote => quote.quote + ', quoteId: ' + quote._id)).then(msg => {
+              let fields = []
+
+              quotes.forEach(quote => fields.push({
+                name: quote.quote,
+                value: 'quoteId: ' + quote._id,
+              }))
+
+              message.channel.send({
+                embed: {
+                  color: 3447003,
+                  title: 'All author quotes',
+                  fields: fields
+                },
+              }).then(msg => {
                 msg.delete(60000)
               })
             } else {
@@ -300,14 +313,7 @@ client.on('message', message => {
           message.channel.send({
             embed: {
               color: 3447003,
-              title: 'Info',
-              fields: [
-                {
-                  name: 'Info message',
-                  value: 'New alias set!',
-                  inline: true,
-                },
-              ],
+              description: 'New alias set!',
             },
           }).then(msg => {
             msg.delete(15000)
@@ -358,7 +364,7 @@ client.on('message', message => {
         message.channel.send({
           embed: {
             color: 3447003,
-            description: err.errmsg
+            description: err.errmsg,
           },
         }).then(msg => {
           msg.delete(15000)
@@ -379,7 +385,7 @@ client.on('message', message => {
         message.channel.send({
           embed: {
             color: 3447003,
-            description: err.errmsg
+            description: err.errmsg,
           },
         }).then(msg => {
           msg.delete(15000)
@@ -390,7 +396,7 @@ client.on('message', message => {
             message.channel.send({
               embed: {
                 color: 3447003,
-                description: err.errmsg
+                description: err.errmsg,
               },
             }).then(msg => {
               msg.delete(15000)
