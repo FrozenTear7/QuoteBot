@@ -450,6 +450,9 @@ client.on('message', message => {
             inline: true,
           },
           {name: '!aliases *author*', value: 'Returns all aliases of that author', inline: true},
+          {name: '!dq *quoteId*', value: 'Deletes the quote', inline: true},
+          {name: '!da *authorId*', value: 'Deletes the author and author\'s quotes', inline: true},
+          {name: 'Bot\'s author', value: '[Paweł Mendroch](https://github.com/FrozenTear7), under MIT license', inline: true},
         ],
       },
     })
