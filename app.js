@@ -26,13 +26,14 @@ db.once('open', () => {
 
 client.on('ready', () => {
   console.log('Ready!')
+  client.user.setGame('!!h to see documentation')
   setInterval(() => {
     https.get('https://discord-quote-bot-frozentear7.herokuapp.com/')
   }, 100000)
 })
 
 client.on('message', message => {
-  if (message.content.match(/^"[^"]+" *~.+/)) {
+  if (message.content.match(/^'[^']+' *~.+/)) {
     Author.findOne({
       server: message.channel.guild.name,
       names: {$in: message.content.match(/~.+/)[0].substring(1)},
@@ -43,7 +44,7 @@ client.on('message', message => {
         })
       else if (author) {
         const newQuote = new Quote({
-          quote: message.content.match(/^"[^"]+"/)[0],
+          quote: message.content.match(/^'[^']+'/)[0],
           author: author,
         })
 
@@ -73,7 +74,7 @@ client.on('message', message => {
             })
           else {
             const newQuote = new Quote({
-              quote: message.content.match(/^"[^"]+"/)[0],
+              quote: message.content.match(/^'[^']+'/)[0],
               author: newAuthor,
             })
 
@@ -208,6 +209,19 @@ client.on('message', message => {
         message.channel.send('Author does not exist!').then(msg => {
           msg.delete(15000)
         })
+    })
+  } else if (message.content.match(/^!!h/)) {
+    message.channel.send({embed: {
+        color: 3447003,
+        title: 'Bot commands:',
+        fields: [
+          { name: '!quote *author* / !q *author*', value: 'Returns a random quote from the author and the server the command is written from', inline: true},
+          { name: '!authors / !a', value: 'Returns all authors, that have quotes on the server', inline: true},
+          { name: '!all *author*', value: 'Returns all quotes from that author', inline: true},
+          { name: '!alias *author* !is *new alias*', value: 'Add a new alias for the author (*author* can be any alias of that author)', inline: true},
+          { name: '!aliases *author*', value: 'Returns all aliases of that author', inline: true}
+        ]
+      }
     })
   }
 })
