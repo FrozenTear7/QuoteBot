@@ -28,7 +28,7 @@ module.exports = class Help extends Commando.Command {
           {name: '&authors / &a', value: 'Returns all authors, that have quotes on the server'},
           {name: '&all *author*', value: 'Returns all quotes from that author'},
           {
-            name: '&alias *author* &is *new alias*',
+            name: '&alias *author*, *new alias*',
             value: 'Add a new alias for the author (*author* can be any alias of that author)',
           },
           {name: '&aliases *author*', value: 'Returns all aliases of that author'},
