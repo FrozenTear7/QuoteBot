@@ -1,20 +1,24 @@
 const Discord = require('discord.js')
 const mongoose = require('mongoose')
-// const config = require('./config.json')
+const config = require('./config.json')
 const Quote = require('./schemas/quote')
 const Author = require('./schemas/author')
 const express = require('express')
 const https = require('https')
+const Commando = require('discord.js-commando')
+const path = require('path')
 
 const app = express()
 
+const client = new Commando.Client({
+  owner: '249135924762378241',
+})
+
 app.listen(process.env.PORT || 8080)
 
-const client = new Discord.Client()
-
 mongoose.connect('mongodb://@ds249992.mlab.com:49992/quotebot-db', {
-  'user': process.env.DBUSER,
-  'pass': process.env.DBPASS,
+  'user': config.DBUSER,
+  'pass': config.DBPASS,
   'useNewUrlParser': true,
 })
 
@@ -31,6 +35,13 @@ client.on('ready', () => {
     https.get('https://discord-quote-bot-frozentear7.herokuapp.com/')
   }, 100000)
 })
+
+client.registry
+  .registerGroups([
+    ['addQuote'],
+  ])
+  .registerDefaults()
+  .registerCommandsIn(path.join(__dirname, 'commands'))
 
 client.on('message', message => {
     if (message.content.match(/^['"][^']+['"] *~.+/)) {
@@ -555,4 +566,4 @@ client.on('message', message => {
   },
 )
 
-client.login(process.env.BOT_TOKEN)
+client.login(config.BOT_TOKEN)
