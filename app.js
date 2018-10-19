@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 const mongoose = require('mongoose')
-const config = require('./config.json')
+// const config = require('./config.json')
 const Quote = require('./schemas/quote')
 const Author = require('./schemas/author')
 const express = require('express')
@@ -18,8 +18,8 @@ const client = new Commando.Client({
 app.listen(process.env.PORT || 8080)
 
 mongoose.connect('mongodb://@ds249992.mlab.com:49992/quotebot-db', {
-  'user': config.DBUSER,
-  'pass': config.DBPASS,
+  'user': process.env.DBUSER,
+  'pass': process.env.DBPASS,
   'useNewUrlParser': true,
 })
 
@@ -194,4 +194,4 @@ client.registry
   .registerDefaults()
   .registerCommandsIn(path.join(__dirname, 'commands'))
 
-client.login(config.BOT_TOKEN)
+client.login(process.env.BOT_TOKEN)
