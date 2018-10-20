@@ -29,7 +29,6 @@ module.exports = class GetImage extends Commando.Command {
         'Content-Type': 'application/json',
         'Authorization': 'Basic RnJvemVuVGVhcjc6bTdNUGdabWQ1WnpFeFhRbmJvWlZpTU5Y',
       },
-      body: {'post': {'rating': 's', 'tag_string': tag}},
     }, (res => {
       res.on('data', (data) => {
         return message.channel.send({
@@ -41,9 +40,7 @@ module.exports = class GetImage extends Commando.Command {
           },
         })
       })
-    }))
-
-    getReq.end()
+    }).end({'post': {'rating': 's', 'tag_string': tag}}))
 
     getReq.on('error', (err) => {
       return message.channel.send({
