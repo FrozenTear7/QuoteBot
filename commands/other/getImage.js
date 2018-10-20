@@ -45,15 +45,15 @@ module.exports = class GetImage extends Commando.Command {
             },
           },
         })
-      })
-    }).on('error', (err) => {
-      return message.channel.send({
-        embed: {
-          color: 0xff0000,
-          description: err,
-        },
-      }).then(msg => {
-        msg.delete(15000)
+      }).on('error', (err) => {
+        return message.channel.send({
+          embed: {
+            color: 0xff0000,
+            description: err,
+          },
+        }).then(msg => {
+          msg.delete(15000)
+        })
       })
     }))
   }
