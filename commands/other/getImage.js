@@ -2,7 +2,7 @@ const Commando = require('discord.js-commando')
 const Author = require('../../schemas/author')
 const Quote = require('../../schemas/quote')
 
-module.exports = class ShowQuote extends Commando.Command {
+module.exports = class GetImage extends Commando.Command {
   constructor(client) {
     super(client, {
       name: 'i',

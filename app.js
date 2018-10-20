@@ -193,6 +193,7 @@ client
 client.registry
   .registerGroup('util', 'Util')
   .registerGroup('quotes', 'Quotes')
+  .registerGroup('other', 'Other')
   .registerDefaults()
   .registerCommandsIn(path.join(__dirname, 'commands'))
 
