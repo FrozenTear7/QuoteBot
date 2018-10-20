@@ -1,6 +1,5 @@
 const Commando = require('discord.js-commando')
-const Author = require('../../schemas/author')
-const Quote = require('../../schemas/quote')
+const https = require('https')
 
 module.exports = class GetImage extends Commando.Command {
   constructor(client) {
@@ -23,28 +22,28 @@ module.exports = class GetImage extends Commando.Command {
   run(message, {author}) {
     message.delete(1)
 
-    fetch('https://danbooru.donmai.us/posts/1.json', {
+    https.request({
+      host: 'https://danbooru.donmai.us/posts/1.json',
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Basic RnJvemVuVGVhcjc6bTdNUGdabWQ1WnpFeFhRbmJvWlZpTU5Y',
       },
       body: {'post': {'rating': 's', 'tag_string': 'kousaka_tamaki'}},
+    }, (response => {
+      if (response.ok) {
+        return response.json()
+      } else {
+        throw new Error('Could not fetch the image')
+      }
     })
-      .then(response => {
-        if (response.ok) {
-          return response.json()
-        } else {
-          throw new Error('Could not fetch the image')
-        }
-      })
       .then(data => {
         return message.channel.send({
           embed: {
             color: 3447003,
             image: {
-              "url": data.file_url,
-            }
+              'url': data.file_url,
+            },
           },
         })
       })
@@ -57,6 +56,6 @@ module.exports = class GetImage extends Commando.Command {
         }).then(msg => {
           msg.delete(15000)
         })
-      })
+      }))
   }
 }
