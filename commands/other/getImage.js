@@ -22,7 +22,6 @@ module.exports = class GetImage extends Commando.Command {
   run(message, {author}) {
     message.delete(1)
 
-    const https = require('https')
     https.request({
       host: 'https://danbooru.donmai.us/posts/1.json',
       method: 'PUT',
@@ -45,7 +44,8 @@ module.exports = class GetImage extends Commando.Command {
             },
           },
         })
-      }).on('error', (err) => {
+      })
+    }).on('error', (err) => {
         return message.channel.send({
           embed: {
             color: 0xff0000,
@@ -55,6 +55,6 @@ module.exports = class GetImage extends Commando.Command {
           msg.delete(15000)
         })
       })
-    }))
+    )
   }
 }
