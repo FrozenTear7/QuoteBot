@@ -19,23 +19,19 @@ module.exports = class GetImage extends Commando.Command {
     })
   }
 
-  run(message, {author}) {
+  run(message, {tag}) {
     message.delete(1)
 
-    https.request({
+    const getReq = https.request({
       host: 'https://danbooru.donmai.us/posts/1.json',
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Basic RnJvemVuVGVhcjc6bTdNUGdabWQ1WnpFeFhRbmJvWlZpTU5Y',
       },
-      body: {'post': {'rating': 's', 'tag_string': 'kousaka_tamaki'}},
+      body: {'post': {'rating': 's', 'tag_string': tag}},
     }, (res => {
-      let data = ''
-      res.on('data', (chunk) => {
-        data += chunk
-      })
-      res.on('end', () => {
+      res.on('data', (data) => {
         return message.channel.send({
           embed: {
             color: 3447003,
@@ -45,16 +41,19 @@ module.exports = class GetImage extends Commando.Command {
           },
         })
       })
-    }).on('error', (err) => {
-        return message.channel.send({
-          embed: {
-            color: 0xff0000,
-            description: err,
-          },
-        }).then(msg => {
-          msg.delete(15000)
-        })
+    }))
+
+    getReq.end()
+
+    getReq.on('error', (err) => {
+      return message.channel.send({
+        embed: {
+          color: 0xff0000,
+          description: err,
+        },
+      }).then(msg => {
+        msg.delete(15000)
       })
-    )
+    })
   }
 }
