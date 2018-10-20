@@ -39,8 +39,6 @@ client.on('ready', () => {
 
 client.on('message', message => {
     if (message.content.match(/^['"][^']+['"] *~.+/)) {
-      message.delete(1)
-
       Author.findOne({
         server: message.channel.guild.name,
         names: {$in: message.content.match(/~.+/)[0].substring(1)},
