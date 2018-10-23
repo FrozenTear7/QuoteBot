@@ -38,7 +38,7 @@ client.on('ready', () => {
 })
 
 client.on('message', message => {
-    if (!message.author.bot && message.content.match(/^['"][^']+['"] *~.+/)) {
+    if (!message.author.bot && message.content.match(/^['"].+['"] *~.+/)) {
       Author.findOne({
         server: message.channel.guild.name,
         names: {$in: message.content.match(/~.+/)[0].substring(1)},
