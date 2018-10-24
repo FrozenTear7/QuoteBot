@@ -28,6 +28,16 @@ module.exports = class GetImage extends Commando.Command {
     const booru = new Danbooru()
 
     booru.posts({random: true, limit: 5, tags: 'sex'}).then(posts => {
+      message.channel.send({
+        embed: {
+          color: 3447003,
+          title: message.author.id + 'is spamming hentai',
+          image: {
+            'url': posts[0].file_url,
+          },
+        },
+      })
+
       posts.forEach(post => {
         if (post && post.file_url)
           message.channel.send({
