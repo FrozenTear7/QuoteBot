@@ -28,6 +28,7 @@ db.once('open', () => {
 const client = new Commando.Client({
   owner: '249135924762378241',
   commandPrefix: '&',
+  unknownCommandResponse: false,
 })
 
 client.on('ready', () => {
