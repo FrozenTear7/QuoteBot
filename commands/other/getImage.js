@@ -1,8 +1,9 @@
 const Commando = require('discord.js-commando')
 const https = require('https')
+const axios = require('axios')
 
 module.exports = class GetImage extends Commando.Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: 'i',
       aliases: ['image'],
@@ -19,38 +20,30 @@ module.exports = class GetImage extends Commando.Command {
     })
   }
 
-  run(message, {tag}) {
+  run (message, {tag}) {
     message.delete(1)
 
-    const getReq = https.request({
-      host: 'https://danbooru.donmai.us/posts/1.json',
-      method: 'PUT',
+    axios({
+      method: 'put',
+      url: 'https://danbooru.donmai.us/posts/1.json',
+      responseType: 'json',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Basic RnJvemVuVGVhcjc6bTdNUGdabWQ1WnpFeFhRbmJvWlZpTU5Y',
-      },
-    }, (res => {
-      res.on('data', (data) => {
+      }
+    })
+      .then((response) => {
         return message.channel.send({
           embed: {
             color: 3447003,
             image: {
-              'url': JSON.parse(data).file_url,
+              'url': JSON.parse(response.data).file_url,
             },
           },
         })
       })
-    }).end({'post': {'rating': 's', 'tag_string': tag}}))
-
-    getReq.on('error', (err) => {
-      return message.channel.send({
-        embed: {
-          color: 0xff0000,
-          description: err,
-        },
-      }).then(msg => {
-        msg.delete(15000)
+      .catch(error => {
+        console.log(error.response)
       })
-    })
   }
 }
