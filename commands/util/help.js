@@ -35,6 +35,8 @@ module.exports = class Help extends Commando.Command {
           {name: '&dq *quoteId*', value: 'Deletes the quote'},
           {name: '&da *authorId*', value: 'Deletes the author and author\'s quotes'},
           {name: '&dl *alias*', value: 'Deletes author\'s alias'},
+          {name: '&i *tag*', value: 'Retuns a random image with given tag'},
+          {name: '&hentaibomb', value: 'Returns 10 random NSFW images'},
           {name: 'Bot\'s author', value: '[Paweł Mendroch](https://github.com/FrozenTear7), under MIT license'},
         ],
       },

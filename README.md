@@ -1,4 +1,4 @@
-# QuoteBot
+# VerySmug
 A simple discord bot, which checks all the messages from the server, that it's in and stores quotes written in format: "**quote**" ~**author**.
 The quotes are connected to the server from which they were read.
 
@@ -13,6 +13,11 @@ The quotes are connected to the server from which they were read.
 * &dq **quoteId** - deletes the quote
 * &da **authorId** - deletes the author and author's quotes
 * &dl **alias** - deletes author's alias
+
+### NSFW
+
+* &i **tag** - returns a random image with given tag
+* &hentaibomb - returns 10 random NSFW images
 
 ## Author
 [Paweł Mendroch](https://github.com/FrozenTear7), under MIT license
