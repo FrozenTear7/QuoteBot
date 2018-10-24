@@ -16,7 +16,7 @@ module.exports = class GetImage extends Commando.Command {
 
     if(!message.channel.nsfw)
       if(!message.channel.nsfw)
-        message.channel.send({
+        return message.channel.send({
           embed: {
             color: 0xff0000,
             description: 'Channel needs to be NSFW',
