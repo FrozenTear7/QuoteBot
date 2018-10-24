@@ -23,14 +23,12 @@ module.exports = class GetImage extends Commando.Command {
   run (message, {tag}) {
     message.delete(1)
 
-    axios({
-      method: 'put',
-      url: 'https://danbooru.donmai.us/posts/1.json',
+    axios.put('https://danbooru.donmai.us/posts/1.json', {
       responseType: 'json',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Basic RnJvemVuVGVhcjc6bTdNUGdabWQ1WnpFeFhRbmJvWlZpTU5Y',
-      }
+      },
     })
       .then((response) => {
         return message.channel.send({
@@ -42,14 +40,15 @@ module.exports = class GetImage extends Commando.Command {
           },
         })
       })
-      .catch(error => {return message.channel.send({
-        embed: {
-          color: 0xff0000,
-          description: error,
-        },
-      }).then(msg => {
-        msg.delete(15000)
-      })
+      .catch(error => {
+        return message.channel.send({
+          embed: {
+            color: 0xff0000,
+            description: error,
+          },
+        }).then(msg => {
+          msg.delete(15000)
+        })
       })
   }
 }
