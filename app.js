@@ -10,7 +10,7 @@ const path = require('path')
 
 const app = express()
 
-const client = new Commando.Client({
+const client = new Commando.Clientd({
   owner: '249135924762378241',
   commandPrefix: '&'
 })
