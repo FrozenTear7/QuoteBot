@@ -35,7 +35,7 @@ module.exports = class GetImage extends Commando.Command {
     const booru = new Danbooru()
 
     booru.posts({random: true, limit: 1, tags: tag}).then(posts => {
-      if (posts[0].file_url)
+      if (posts && posts[0] && posts[0].file_url)
         return message.channel.send({
           embed: {
             color: 3447003,

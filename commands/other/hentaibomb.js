@@ -29,7 +29,7 @@ module.exports = class GetImage extends Commando.Command {
 
     booru.posts({random: true, limit: 5, tags: 'sex'}).then(posts => {
       posts.forEach(post => {
-        if (post.file_url)
+        if (post && post.file_url)
           message.channel.send({
             embed: {
               image: {
