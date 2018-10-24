@@ -28,7 +28,7 @@ module.exports = class GetImage extends Commando.Command {
         return message.channel.send({
           embed: {
             color: 3447003,
-            title: message.author.id + 'image tag: ' + tag,
+            title: message.author.tag + ' requested: ' + tag,
             image: {
               'url': posts[0].file_url,
             },
