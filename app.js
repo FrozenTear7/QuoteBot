@@ -32,6 +32,7 @@ const client = new Commando.Client({
 
 client.on('ready', () => {
   console.log('Ready!')
+  client.user.setUsername('VerySmug')
   client.user.setActivity('&h to see documentation')
   setInterval(() => {
     https.get('https://discord-quote-bot-frozentear7.herokuapp.com/')
