@@ -17,11 +17,11 @@ module.exports = class GetImage extends Commando.Command {
     const booru = new Danbooru()
 
     booru.posts({ random: true, limit: 5, tags: 'sex'}).then(posts => {
+      console.log(posts)
+
       posts.forEach(post => {
         message.channel.send({
           embed: {
-            color: 3447003,
-            title: 'Hentai UwU :3',
             image: {
               'url': post.file_url
             },
