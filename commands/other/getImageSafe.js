@@ -24,16 +24,36 @@ module.exports = class GetImage extends Commando.Command {
     const booru = new Danbooru()
 
     booru.posts({ random: true, limit: 1, tags: 'rating:safe ' + tag}).then(posts => {
+      if (posts[0].file_url)
+        return message.channel.send({
+          embed: {
+            color: 3447003,
+            title: 'Safe for work UwU :3',
+            image: {
+              'url': posts[0].file_url,
+            },
+          },
+        })
+      else
+        return message.channel.send({
+          embed: {
+            color: 0xff0000,
+            title: 'Could not get an image (might be a wrong tag)',
+          },
+        }).then(msg => {
+          msg.delete(15000)
+        })
+    }).catch(err => {
+      console.log(err)
+
       return message.channel.send({
         embed: {
-          color: 3447003,
-          title: 'Safe for work UwU :3',
-          image: {
-            'url': posts[0].file_url
-          },
+          color: 0xff0000,
+          description: err,
         },
+      }).then(msg => {
+        msg.delete(15000)
       })
-
     })
   }
 }

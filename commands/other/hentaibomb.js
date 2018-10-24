@@ -14,8 +14,8 @@ module.exports = class GetImage extends Commando.Command {
   run (message, {tag}) {
     message.delete(1)
 
-    if(!message.channel.nsfw)
-      if(!message.channel.nsfw)
+    if (!message.channel.nsfw)
+      if (!message.channel.nsfw)
         return message.channel.send({
           embed: {
             color: 0xff0000,
@@ -27,15 +27,16 @@ module.exports = class GetImage extends Commando.Command {
 
     const booru = new Danbooru()
 
-    booru.posts({ random: true, limit: 5, tags: 'sex'}).then(posts => {
+    booru.posts({random: true, limit: 5, tags: 'sex'}).then(posts => {
       posts.forEach(post => {
-        message.channel.send({
-          embed: {
-            image: {
-              'url': post.file_url
+        if (post.file_url)
+          message.channel.send({
+            embed: {
+              image: {
+                'url': post.file_url,
+              },
             },
-          },
-        })
+          })
       })
     }).catch(err => {
       return message.channel.send({
