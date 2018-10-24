@@ -23,7 +23,14 @@ module.exports = class GetImage extends Commando.Command {
     message.delete(1)
 
     if(!message.channel.nsfw)
-      return
+      message.channel.send({
+        embed: {
+          color: 0xff0000,
+          description: 'Channel needs to be NSFW',
+        },
+      }).then(msg => {
+        msg.delete(15000)
+      })
 
     const booru = new Danbooru()
 
