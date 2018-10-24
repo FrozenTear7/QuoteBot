@@ -14,6 +14,9 @@ module.exports = class GetImage extends Commando.Command {
   run (message, {tag}) {
     message.delete(1)
 
+    if(!message.channel.nsfw)
+      return
+
     const booru = new Danbooru()
 
     booru.posts({ random: true, limit: 5, tags: 'sex'}).then(posts => {
