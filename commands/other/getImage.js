@@ -23,7 +23,7 @@ module.exports = class GetImage extends Commando.Command {
   run (message, {tag}) {
     message.delete(1)
 
-    axios.put('https://danbooru.donmai.us/posts/1.json', {
+    axios.post('https://danbooru.donmai.us/posts/1.json', {
       responseType: 'json',
       headers: {
         'Content-Type': 'application/json',
@@ -31,13 +31,13 @@ module.exports = class GetImage extends Commando.Command {
       },
     })
       .then((response) => {
-        console.log(JSON.parse(JSON.stringify(response)))
+        console.log(response)
 
         return message.channel.send({
           embed: {
             color: 3447003,
             image: {
-              'url': JSON.parse(JSON.stringify(response.data.file_url)),
+              'url': response.data.file_url,
             },
           },
         })
