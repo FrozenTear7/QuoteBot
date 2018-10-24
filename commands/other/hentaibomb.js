@@ -20,8 +20,6 @@ module.exports = class GetImage extends Commando.Command {
     const booru = new Danbooru()
 
     booru.posts({ random: true, limit: 5, tags: 'sex'}).then(posts => {
-      console.log(posts)
-
       posts.forEach(post => {
         message.channel.send({
           embed: {
