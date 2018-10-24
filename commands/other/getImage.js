@@ -24,13 +24,14 @@ module.exports = class GetImage extends Commando.Command {
 
     const booru = new Danbooru()
 
-    booru.posts({ tags: 'order:rank' }).then(posts => {
+    booru.posts({ random: true, limit: 5, tags: tag}).then(posts => {
       const index = Math.floor(Math.random() * posts.length)
       const post = posts[index]
 
       return message.channel.send({
         embed: {
           color: 3447003,
+          title: 'Hentai UwU :3',
           image: {
             'url': post.file_url
           },
