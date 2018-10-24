@@ -31,11 +31,13 @@ module.exports = class GetImage extends Commando.Command {
       },
     })
       .then((response) => {
+        console.log(response)
+
         return message.channel.send({
           embed: {
             color: 3447003,
             image: {
-              'url': JSON.parse(response.data).file_url,
+              'url': response.data.file_url,
             },
           },
         })

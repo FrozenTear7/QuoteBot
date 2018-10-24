@@ -1,4 +1,3 @@
-const Discord = require('discord.js')
 const mongoose = require('mongoose')
 // const config = require('./config.json')
 const Quote = require('./schemas/quote')
@@ -10,11 +9,6 @@ const path = require('path')
 
 const app = express()
 
-const client = new Commando.Clientd({
-  owner: '249135924762378241',
-  commandPrefix: '&'
-})
-
 app.listen(process.env.PORT || 8080)
 
 mongoose.connect('mongodb://@ds249992.mlab.com:49992/quotebot-db', {
@@ -23,10 +17,17 @@ mongoose.connect('mongodb://@ds249992.mlab.com:49992/quotebot-db', {
   'useNewUrlParser': true,
 })
 
+// mongoose.connect('mongodb://@ds249992.mlab.com:49992/quotebot-db', config.dbOptions)
+
 let db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))
 db.once('open', () => {
   console.log('Connection open')
+})
+
+const client = new Commando.Client({
+  owner: '249135924762378241',
+  commandPrefix: '&',
 })
 
 client.on('ready', () => {
@@ -144,50 +145,6 @@ client.on('message', message => {
   },
 )
 
-client
-  .on('error', console.error)
-  .on('warn', console.warn)
-  .on('debug', console.log)
-  .on('ready', () => {
-    console.log(`Client ready; logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`)
-  })
-  .on('disconnect', () => {
-    console.warn('Disconnected!')
-  })
-  .on('reconnecting', () => {
-    console.warn('Reconnecting...')
-  })
-  .on('commandError', (cmd, err) => {
-    if (err instanceof Commando.FriendlyError) return
-    console.error(`Error in command ${cmd.groupID}:${cmd.memberName}`, err)
-  })
-  .on('commandBlocked', (msg, reason) => {
-    console.log(oneLine`
-			Command ${msg.command ? `${msg.command.groupID}:${msg.command.memberName}` : ''}
-			blocked; ${reason}
-		`)
-  })
-  .on('commandPrefixChange', (guild, prefix) => {
-    console.log(oneLine`
-			Prefix ${prefix === '' ? 'removed' : `changed to ${prefix || 'the default'}`}
-			${guild ? `in guild ${guild.name} (${guild.id})` : 'globally'}.
-		`)
-  })
-  .on('commandStatusChange', (guild, command, enabled) => {
-    console.log(oneLine`
-			Command ${command.groupID}:${command.memberName}
-			${enabled ? 'enabled' : 'disabled'}
-			${guild ? `in guild ${guild.name} (${guild.id})` : 'globally'}.
-		`)
-  })
-  .on('groupStatusChange', (guild, group, enabled) => {
-    console.log(oneLine`
-			Group ${group.id}
-			${enabled ? 'enabled' : 'disabled'}
-			${guild ? `in guild ${guild.name} (${guild.id})` : 'globally'}.
-		`)
-  })
-
 client.registry
   .registerGroup('util', 'Util')
   .registerGroup('quotes', 'Quotes')
@@ -196,3 +153,4 @@ client.registry
   .registerCommandsIn(path.join(__dirname, 'commands'))
 
 client.login(process.env.BOT_TOKEN)
+// client.login(config.BOT_TOKEN)
