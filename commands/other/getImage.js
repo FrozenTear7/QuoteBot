@@ -1,6 +1,5 @@
 const Commando = require('discord.js-commando')
-const https = require('https')
-const axios = require('axios')
+const Danbooru = require('danbooru')
 
 module.exports = class GetImage extends Commando.Command {
   constructor (client) {
@@ -23,34 +22,21 @@ module.exports = class GetImage extends Commando.Command {
   run (message, {tag}) {
     message.delete(1)
 
-    axios.post('https://danbooru.donmai.us/posts/1.json', {
-      responseType: 'json',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic RnJvemVuVGVhcjc6bTdNUGdabWQ1WnpFeFhRbmJvWlZpTU5Y',
-      },
-    })
-      .then((response) => {
-        console.log(response)
+    const booru = new Danbooru()
 
-        return message.channel.send({
-          embed: {
-            color: 3447003,
-            image: {
-              'url': response.data.file_url,
-            },
+    booru.posts({ tags: 'order:rank' }).then(posts => {
+      const index = Math.floor(Math.random() * posts.length)
+      const post = posts[index]
+
+      return message.channel.send({
+        embed: {
+          color: 3447003,
+          image: {
+            'url': post.file_url
           },
-        })
+        },
       })
-      .catch(error => {
-        return message.channel.send({
-          embed: {
-            color: 0xff0000,
-            description: error,
-          },
-        }).then(msg => {
-          msg.delete(15000)
-        })
-      })
+
+    })
   }
 }

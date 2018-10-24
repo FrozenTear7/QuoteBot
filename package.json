@@ -8,6 +8,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "cookie-parser": "~1.4.3",
+    "danbooru": "^3.0.8",
     "debug": "~2.6.9",
     "discord.js": "^11.4.2",
     "discord.js-commando": "^0.10.0",
