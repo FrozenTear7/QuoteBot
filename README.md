@@ -17,6 +17,7 @@ The quotes are connected to the server from which they were read.
 ### NSFW
 
 * &i **tag** - returns a random image with given tag
+* &i **tag** - returns a SFW random image with given tag
 * &hentaibomb - returns 10 random NSFW images
 
 ## Author
