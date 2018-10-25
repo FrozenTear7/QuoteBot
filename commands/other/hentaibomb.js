@@ -32,9 +32,6 @@ module.exports = class GetImage extends Commando.Command {
         embed: {
           color: 3447003,
           title: message.author.tag + ' is spamming hentai',
-          image: {
-            'url': posts[0].file_url,
-          },
         },
       })
 
