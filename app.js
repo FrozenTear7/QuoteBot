@@ -36,7 +36,7 @@ client.on('ready', () => {
   client.user.setUsername('VerySmug')
   client.user.setActivity('&h to see documentation')
   setInterval(() => {
-    https.get('https://discord-quote-bot-frozentear7.herokuapp.com/')
+    https.get('https://discord-very-smug-bot.herokuapp.com//')
   }, 100000)
 })
 
