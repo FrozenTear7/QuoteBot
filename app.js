@@ -55,6 +55,15 @@ client.on('message', message => {
           }).then(msg => {
             msg.delete(15000)
           })
+        else if (message.content.match(/^['"].+['"]/))
+          message.channel.send({
+            embed: {
+              color: 3447003,
+              description: "Something went wrong",
+            },
+          }).then(msg => {
+            msg.delete(15000)
+          })
         else if (author) {
           const newQuote = new Quote({
             quote: message.content.match(/^['"].+['"]/)[0],
