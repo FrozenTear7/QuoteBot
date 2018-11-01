@@ -26,22 +26,32 @@ module.exports = class ShowAuthors extends Commando.Command {
             msg.delete(15000)
           })
         else if (authors.length > 0) {
-          let fields = []
-
-          authors.forEach(author => fields.push({
-            name: author.names[0],
-            value: 'authorId: ' + author._id,
-          }))
-
           message.channel.send({
             embed: {
               color: 3447003,
               title: 'Authors',
-              fields: fields,
             },
           }).then(msg => {
             msg.delete(60000)
           })
+
+          for(let i = 0; i * 10 < authors.length; i++) {
+            let fields = []
+
+            authors.slice(i * 10, (i + 1) * 10 < authors.length ? (i + 1) * 10 : authors.length).forEach(author => fields.push({
+              name: author.names[0],
+              value: 'authorId: ' + author._id,
+            }))
+
+            message.channel.send({
+              embed: {
+                color: 3447003,
+                fields: fields,
+              },
+            }).then(msg => {
+              msg.delete(60000)
+            })
+          }
         } else {
           message.channel.send({
             embed: {

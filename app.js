@@ -138,9 +138,8 @@ client.on('message', message => {
                       title: 'Saved',
                       fields: [
                         {
-                          name: 'Quote: ' + newQuote.quote + ', author: ' + newAuthor.names[0],
+                          name: 'Quote added!',
                           value: 'quoteId: ' + newQuote._id + ', authorId: ' + newAuthor._id,
-                          inline: true,
                         },
                       ],
                     },

@@ -47,22 +47,32 @@ module.exports = class ShowAuthorQuotes extends Commando.Command {
                 msg.delete(15000)
               })
             else if (quotes.length > 0) {
-              let fields = []
-
-              quotes.forEach(quote => fields.push({
-                name: quote.quote,
-                value: 'quoteId: ' + quote._id,
-              }))
-
               message.channel.send({
                 embed: {
                   color: 3447003,
                   title: 'All ' + author.names[0] + ' quotes',
-                  fields: fields,
                 },
               }).then(msg => {
                 msg.delete(60000)
               })
+
+              for(let i = 0; i * 10 < authors.length; i++) {
+                let fields = []
+
+                quotes.slice(i * 10, (i + 1) * 10 < quotes.length ? (i + 1) * 10 : quotes.length).forEach(quote => fields.push({
+                  name: quote.quote,
+                  value: 'quoteId: ' + quote._id,
+                }))
+
+                message.channel.send({
+                  embed: {
+                    color: 3447003,
+                    fields: fields,
+                  },
+                }).then(msg => {
+                  msg.delete(60000)
+                })
+              }
             } else {
               message.channel.send({
                 embed: {
