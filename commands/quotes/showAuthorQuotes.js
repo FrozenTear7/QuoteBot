@@ -56,7 +56,7 @@ module.exports = class ShowAuthorQuotes extends Commando.Command {
                 msg.delete(60000)
               })
 
-              for(let i = 0; i * 10 < authors.length; i++) {
+              for(let i = 0; i * 10 < quotes.length; i++) {
                 let fields = []
 
                 quotes.slice(i * 10, (i + 1) * 10 < quotes.length ? (i + 1) * 10 : quotes.length).forEach(quote => fields.push({
