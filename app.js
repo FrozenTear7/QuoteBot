@@ -41,10 +41,10 @@ client.on('ready', () => {
 })
 
 client.on('message', message => {
-    if (!message.author.bot && message.content.match(/^['"].+['"] *~.+/)) {
+    if (!message.author.bot && message.content.match(/^['"].+['"] *~ *.+/)) {
       Author.findOne({
         server: message.channel.guild.name,
-        names: {$in: message.content.match(/~.+/)[0].substring(1)},
+        names: {$in: message.content.match(/~ *.+/)[0].substring(message.content.match(/~ */)[0].length)},
       }, (err, author) => {
         if (err)
           message.channel.send({
