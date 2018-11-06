@@ -23,7 +23,7 @@ module.exports = class DeleteAuthor extends Commando.Command {
   run (message, {authorId}) {
     message.delete(1)
 
-    if (mongoose.Types.ObjectId(authorId)) {
+    if (authorId.match(/^[0-9a-fA-F]{24}$/)) {
       Quote.deleteMany({author: authorId}, (err) => {
         if (err) {
           message.channel.send({

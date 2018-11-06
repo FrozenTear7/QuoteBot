@@ -22,7 +22,7 @@ module.exports = class DeleteQuote extends Commando.Command {
   run (message, {quoteId}) {
     message.delete(1)
 
-    if (mongoose.Types.ObjectId(quoteId)) {
+    if (quoteId.match(/^[0-9a-fA-F]{24}$/)) {
       Quote.deleteOne({_id: quoteId}, (err) => {
         if (err)
           message.channel.send({
