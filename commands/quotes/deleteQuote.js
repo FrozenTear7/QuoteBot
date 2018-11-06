@@ -21,7 +21,7 @@ module.exports = class DeleteQuote extends Commando.Command {
   run(message, {quoteId}) {
     message.delete(1)
 
-    Quote.deleteOne({_id: quoteId}, (err) => {
+    Quote.deleteOne({_id: mongoose.Types.ObjectId.fromString(quoteId)}, (err) => {
       if (err)
         message.channel.send({
           embed: {

@@ -22,7 +22,7 @@ module.exports = class DeleteAuthor extends Commando.Command {
   run(message, {authorId}) {
     message.delete(1)
 
-    Quote.deleteMany({author: authorId}, (err) => {
+    Quote.deleteMany({author: mongoose.Types.ObjectId.fromString(authorId)}, (err) => {
       if (err) {
         console.log(err)
         message.channel.send({
