@@ -43,7 +43,7 @@ client.on('ready', () => {
 client.on('error', console.log)
 
 client.on('message', message => {
-    console.log(message.length)
+    console.log(message.content.length)
     if (message.content.length >= 1000) {
       message.channel.send({
         embed: {
