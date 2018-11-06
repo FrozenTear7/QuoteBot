@@ -23,7 +23,8 @@ module.exports = class DeleteAuthor extends Commando.Command {
     message.delete(1)
 
     Quote.deleteMany({author: authorId}, (err) => {
-      if (err)
+      if (err) {
+        console.log(err)
         message.channel.send({
           embed: {
             color: 0xff0000,
@@ -32,7 +33,7 @@ module.exports = class DeleteAuthor extends Commando.Command {
         }).then(msg => {
           msg.delete(15000)
         })
-      else {
+      } else {
         Author.deleteOne({
           server: message.channel.guild.name,
           _id: authorId,
