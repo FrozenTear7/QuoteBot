@@ -43,12 +43,11 @@ client.on('ready', () => {
 client.on('error', console.log)
 
 client.on('message', message => {
-    console.log(message.content.length)
-    if (message.content.length >= 1000) {
+    if (message.content.length >= 256) {
       message.channel.send({
         embed: {
           color: 3447003,
-          description: 'Message must be shorter than 1000 characters!',
+          description: 'Message must be shorter than 256 characters!',
         },
       }).then(msg => {
         msg.delete(15000)
