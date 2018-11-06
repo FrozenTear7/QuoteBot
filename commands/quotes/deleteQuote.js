@@ -3,7 +3,7 @@ const Commando = require('discord.js-commando')
 const Quote = require('../../schemas/quote')
 
 module.exports = class DeleteQuote extends Commando.Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: 'dq',
       group: 'quotes',
@@ -19,28 +19,39 @@ module.exports = class DeleteQuote extends Commando.Command {
     })
   }
 
-  run(message, {quoteId}) {
+  run (message, {quoteId}) {
     message.delete(1)
 
-    Quote.deleteOne({_id: mongoose.Types.ObjectId.fromString(quoteId)}, (err) => {
-      if (err)
-        message.channel.send({
-          embed: {
-            color: 0xff0000,
-            description: err.errmsg,
-          },
-        }).then(msg => {
-          msg.delete(15000)
-        })
-      else
-        message.channel.send({
-          embed: {
-            color: 3447003,
-            description: 'Quote deleted!',
-          },
-        }).then(msg => {
-          msg.delete(15000)
-        })
-    })
+    if (mongoose.Types.ObjectId(quoteId)) {
+      Quote.deleteOne({_id: quoteId}, (err) => {
+        if (err)
+          message.channel.send({
+            embed: {
+              color: 0xff0000,
+              description: err.errmsg,
+            },
+          }).then(msg => {
+            msg.delete(15000)
+          })
+        else
+          message.channel.send({
+            embed: {
+              color: 3447003,
+              description: 'Quote deleted!',
+            },
+          }).then(msg => {
+            msg.delete(15000)
+          })
+      })
+    } else {
+      message.channel.send({
+        embed: {
+          color: 0xff0000,
+          description: 'Wrong id',
+        },
+      }).then(msg => {
+        msg.delete(15000)
+      })
+    }
   }
 }
