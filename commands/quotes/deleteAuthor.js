@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 const Commando = require('discord.js-commando')
 const Author = require('../../schemas/author')
 const Quote = require('../../schemas/quote')

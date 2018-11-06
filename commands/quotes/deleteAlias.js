@@ -25,7 +25,6 @@ module.exports = class DeleteAuthor extends Commando.Command {
       server: message.channel.guild.name,
       names: {$in: alias},
     }, (err, author) => {
-      console.log(author)
       if (err)
         message.channel.send({
           embed: {
