@@ -20,7 +20,7 @@ mongoose.connect('mongodb://@ds249992.mlab.com:49992/quotebot-db', {
 // mongoose.connect('mongodb://@ds249992.mlab.com:49992/quotebot-db', config.dbOptions)
 
 let db = mongoose.connection
-db.on('error', console.error.bind(console, 'connection error:'))
+db.on('error', console.log)
 db.once('open', () => {
   console.log('Connection open')
 })
@@ -39,6 +39,8 @@ client.on('ready', () => {
     https.get('https://discord-very-smug-bot.herokuapp.com//')
   }, 100000)
 })
+
+client.on('error', console.log)
 
 client.on('message', message => {
     if (!message.author.bot && message.content.match(/^['"].+['"] *~ *.+/)) {
@@ -59,7 +61,7 @@ client.on('message', message => {
           message.channel.send({
             embed: {
               color: 3447003,
-              description: "Something went wrong",
+              description: 'Something went wrong',
             },
           }).then(msg => {
             msg.delete(15000)
