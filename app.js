@@ -43,7 +43,16 @@ client.on('ready', () => {
 client.on('error', console.log)
 
 client.on('message', message => {
-    if (!message.author.bot && message.content.match(/^['"].+['"] *~ *.+/)) {
+    if (message.content.length >= 1000) {
+      message.channel.send({
+        embed: {
+          color: 3447003,
+          description: 'Quotes must be shorter than 1000 characters!',
+        },
+      }).then(msg => {
+        msg.delete(15000)
+      })
+    } else if (!message.author.bot && message.content.match(/^['"].+['"] *~ *.+/)) {
       Author.findOne({
         server: message.channel.guild.name,
         names: {$in: message.content.match(/~ *.+/)[0].substring(message.content.match(/~ */)[0].length)},
