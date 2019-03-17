@@ -43,6 +43,8 @@ client.on('ready', () => {
 client.on('error', console.log)
 
 client.on('message', message => {
+    console.log(message)
+
     if (!message.channel || !message.channel.guild || !message.channel.guild.name) {
       return message.channel.send({
         embed: {
