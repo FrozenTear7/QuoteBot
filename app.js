@@ -43,6 +43,17 @@ client.on('ready', () => {
 client.on('error', console.log)
 
 client.on('message', message => {
+    if (!message.channel || !message.channel.guild || !message.channel.guild.name) {
+      return message.channel.send({
+        embed: {
+          color: 0xff0000,
+          description: 'Channel only!',
+        },
+      }).then(msg => {
+        msg.delete(15000)
+      })
+    }
+
     if (!message.author.bot && message.content.match(/^['"].+['"] *~ *.+/)) {
       if (message.content.length >= 256) {
         message.channel.send({

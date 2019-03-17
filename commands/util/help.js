@@ -1,7 +1,7 @@
 const Commando = require('discord.js-commando')
 
 module.exports = class Help extends Commando.Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: 'h',
       group: 'util',
@@ -10,7 +10,18 @@ module.exports = class Help extends Commando.Command {
     })
   }
 
-  run(message, args) {
+  run (message, args) {
+    if (!message.channel || !message.channel.guild || !message.channel.guild.name) {
+      return message.channel.send({
+        embed: {
+          color: 0xff0000,
+          description: 'Channel only!',
+        },
+      }).then(msg => {
+        msg.delete(15000)
+      })
+    }
+
     message.delete(1)
     return message.channel.send({
       embed: {

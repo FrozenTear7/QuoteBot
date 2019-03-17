@@ -20,6 +20,17 @@ module.exports = class DeleteQuote extends Commando.Command {
   }
 
   run (message, {quoteId}) {
+    if (!message.channel || !message.channel.guild || !message.channel.guild.name) {
+      return message.channel.send({
+        embed: {
+          color: 0xff0000,
+          description: 'Channel only!',
+        },
+      }).then(msg => {
+        msg.delete(15000)
+      })
+    }
+
     message.delete(1)
 
     if (quoteId.match(/^[0-9a-fA-F]{24}$/)) {

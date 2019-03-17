@@ -20,6 +20,17 @@ module.exports = class GetImage extends Commando.Command {
   }
 
   run (message, {tag}) {
+    if (!message.channel || !message.channel.guild || !message.channel.guild.name) {
+      return message.channel.send({
+        embed: {
+          color: 0xff0000,
+          description: 'Channel only!',
+        },
+      }).then(msg => {
+        msg.delete(15000)
+      })
+    }
+
     message.delete(1)
 
     if (!message.channel.nsfw)

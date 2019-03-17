@@ -3,7 +3,7 @@ const Author = require('../../schemas/author')
 const Quote = require('../../schemas/quote')
 
 module.exports = class ShowQuote extends Commando.Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: 'q',
       aliases: ['quote'],
@@ -20,7 +20,18 @@ module.exports = class ShowQuote extends Commando.Command {
     })
   }
 
-  run(message, {author}) {
+  run (message, {author}) {
+    if (!message.channel || !message.channel.guild || !message.channel.guild.name) {
+      return message.channel.send({
+        embed: {
+          color: 0xff0000,
+          description: 'Channel only!',
+        },
+      }).then(msg => {
+        msg.delete(15000)
+      })
+    }
+
     message.delete(1)
 
     Author.findOne({

@@ -2,7 +2,7 @@ const Commando = require('discord.js-commando')
 const Author = require('../../schemas/author')
 
 module.exports = class ShowAuthorAliases extends Commando.Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: 'aliases',
       group: 'quotes',
@@ -18,7 +18,18 @@ module.exports = class ShowAuthorAliases extends Commando.Command {
     })
   }
 
-  run(message, {author}) {
+  run (message, {author}) {
+    if (!message.channel || !message.channel.guild || !message.channel.guild.name) {
+      return message.channel.send({
+        embed: {
+          color: 0xff0000,
+          description: 'Channel only!',
+        },
+      }).then(msg => {
+        msg.delete(15000)
+      })
+    }
+
     message.delete(1)
 
     Author.findOne({

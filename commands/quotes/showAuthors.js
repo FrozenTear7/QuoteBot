@@ -2,7 +2,7 @@ const Commando = require('discord.js-commando')
 const Author = require('../../schemas/author')
 
 module.exports = class ShowAuthors extends Commando.Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: 'a',
       aliases: ['authors'],
@@ -12,7 +12,18 @@ module.exports = class ShowAuthors extends Commando.Command {
     })
   }
 
-  run(message, args) {
+  run (message, args) {
+    if (!message.channel || !message.channel.guild || !message.channel.guild.name) {
+      return message.channel.send({
+        embed: {
+          color: 0xff0000,
+          description: 'Channel only!',
+        },
+      }).then(msg => {
+        msg.delete(15000)
+      })
+    }
+
     message.delete(1)
 
     Author.find({server: message.channel.guild.name}, (err, authors) => {
@@ -35,7 +46,7 @@ module.exports = class ShowAuthors extends Commando.Command {
             msg.delete(60000)
           })
 
-          for(let i = 0; i * 10 < authors.length; i++) {
+          for (let i = 0; i * 10 < authors.length; i++) {
             let fields = []
 
             authors.slice(i * 10, (i + 1) * 10 < authors.length ? (i + 1) * 10 : authors.length).forEach(author => fields.push({

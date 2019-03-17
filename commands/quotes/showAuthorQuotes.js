@@ -3,7 +3,7 @@ const Author = require('../../schemas/author')
 const Quote = require('../../schemas/quote')
 
 module.exports = class ShowAuthorQuotes extends Commando.Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: 'all',
       group: 'quotes',
@@ -19,7 +19,18 @@ module.exports = class ShowAuthorQuotes extends Commando.Command {
     })
   }
 
-  run(message, {author}) {
+  run (message, {author}) {
+    if (!message.channel || !message.channel.guild || !message.channel.guild.name) {
+      return message.channel.send({
+        embed: {
+          color: 0xff0000,
+          description: 'Channel only!',
+        },
+      }).then(msg => {
+        msg.delete(15000)
+      })
+    }
+
     message.delete(1)
 
     Author.findOne({
@@ -56,7 +67,7 @@ module.exports = class ShowAuthorQuotes extends Commando.Command {
                 msg.delete(60000)
               })
 
-              for(let i = 0; i * 10 < quotes.length; i++) {
+              for (let i = 0; i * 10 < quotes.length; i++) {
                 let fields = []
 
                 quotes.slice(i * 10, (i + 1) * 10 < quotes.length ? (i + 1) * 10 : quotes.length).forEach(quote => fields.push({

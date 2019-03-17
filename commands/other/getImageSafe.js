@@ -19,11 +19,22 @@ module.exports = class GetImage extends Commando.Command {
   }
 
   run (message, {tag}) {
+    if (!message.channel || !message.channel.guild || !message.channel.guild.name) {
+      return message.channel.send({
+        embed: {
+          color: 0xff0000,
+          description: 'Channel only!',
+        },
+      }).then(msg => {
+        msg.delete(15000)
+      })
+    }
+
     message.delete(1)
 
     const booru = new Danbooru()
 
-    booru.posts({ random: true, limit: 1, tags: 'rating:safe ' + tag}).then(posts => {
+    booru.posts({random: true, limit: 1, tags: 'rating:safe ' + tag}).then(posts => {
       if (posts && posts[0] && posts[0].file_url)
         return message.channel.send({
           embed: {

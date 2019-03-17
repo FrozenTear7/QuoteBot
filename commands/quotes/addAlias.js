@@ -19,6 +19,17 @@ module.exports = class AddAlias extends Commando.Command {
   }
 
   run(message, args) {
+    if(!message.channel || !message.channel.guild || !message.channel.guild.name) {
+      return message.channel.send({
+        embed: {
+          color: 0xff0000,
+          description: 'Channel only!',
+        },
+      }).then(msg => {
+        msg.delete(15000)
+      })
+    }
+
     message.delete(1)
 
     const aliases = args.alias.replace(', ', ',').replace(' ,', ',').split(',')
