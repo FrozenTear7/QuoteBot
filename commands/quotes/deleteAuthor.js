@@ -21,8 +21,8 @@ module.exports = class DeleteAuthor extends Commando.Command {
   }
 
   run (message, {authorId}) {
-    if(!message.channel || !message.channel.guild || !message.channel.guild.name) {
-      return message.channel.send({
+    if (message.channel.type === 'dm') {
+      message.channel.send({
         embed: {
           color: 0xff0000,
           description: 'Channel only!',
@@ -30,56 +30,56 @@ module.exports = class DeleteAuthor extends Commando.Command {
       }).then(msg => {
         msg.delete(15000)
       })
-    }
-
-    message.delete(1)
-
-    if (authorId.match(/^[0-9a-fA-F]{24}$/)) {
-      Quote.deleteMany({author: authorId}, (err) => {
-        if (err) {
-          message.channel.send({
-            embed: {
-              color: 0xff0000,
-              description: err.errmsg,
-            },
-          }).then(msg => {
-            msg.delete(15000)
-          })
-        } else {
-          Author.deleteOne({
-            server: message.channel.guild.name,
-            _id: authorId,
-          }, (err) => {
-            if (err)
-              message.channel.send({
-                embed: {
-                  color: 0xff0000,
-                  description: err.errmsg,
-                },
-              }).then(msg => {
-                msg.delete(15000)
-              })
-            else
-              message.channel.send({
-                embed: {
-                  color: 3447003,
-                  description: 'Author and quotes deleted!',
-                },
-              }).then(msg => {
-                msg.delete(15000)
-              })
-          })
-        }
-      })
     } else {
-      message.channel.send({
-        embed: {
-          color: 0xff0000,
-          description: 'Wrong id',
-        },
-      }).then(msg => {
-        msg.delete(15000)
-      })
+      message.delete(1)
+
+      if (authorId.match(/^[0-9a-fA-F]{24}$/)) {
+        Quote.deleteMany({author: authorId}, (err) => {
+          if (err) {
+            message.channel.send({
+              embed: {
+                color: 0xff0000,
+                description: err.errmsg,
+              },
+            }).then(msg => {
+              msg.delete(15000)
+            })
+          } else {
+            Author.deleteOne({
+              server: message.channel.guild.name,
+              _id: authorId,
+            }, (err) => {
+              if (err)
+                message.channel.send({
+                  embed: {
+                    color: 0xff0000,
+                    description: err.errmsg,
+                  },
+                }).then(msg => {
+                  msg.delete(15000)
+                })
+              else
+                message.channel.send({
+                  embed: {
+                    color: 3447003,
+                    description: 'Author and quotes deleted!',
+                  },
+                }).then(msg => {
+                  msg.delete(15000)
+                })
+            })
+          }
+        })
+      } else {
+        message.channel.send({
+          embed: {
+            color: 0xff0000,
+            description: 'Wrong id',
+          },
+        }).then(msg => {
+          msg.delete(15000)
+        })
+      }
     }
   }
 }

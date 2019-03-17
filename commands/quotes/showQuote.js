@@ -21,7 +21,7 @@ module.exports = class ShowQuote extends Commando.Command {
   }
 
   run (message, {author}) {
-    if (!message.channel || !message.channel.guild || !message.channel.guild.name) {
+    if (message.channel.type === 'dm') {
       return message.channel.send({
         embed: {
           color: 0xff0000,
@@ -30,62 +30,63 @@ module.exports = class ShowQuote extends Commando.Command {
       }).then(msg => {
         msg.delete(15000)
       })
-    }
+    } else {
 
-    message.delete(1)
+      message.delete(1)
 
-    Author.findOne({
-      server: message.channel.guild.name,
-      names: {$in: author},
-    }, (err, author) => {
-      if (err)
-        return message.channel.send({
-          embed: {
-            color: 0xff0000,
-            description: err.errmsg,
-          },
-        }).then(msg => {
-          msg.delete(15000)
-        })
-      else if (author)
-        Quote.find({author: author._id}, (err, quotes) => {
-          if (err)
-            return message.channel.send({
-              embed: {
-                color: 0xff0000,
-                description: err.errmsg,
-              },
-            }).then(msg => {
-              msg.delete(15000)
-            })
-          else {
-            if (quotes.length === 0)
+      Author.findOne({
+        server: message.channel.guild.name,
+        names: {$in: author},
+      }, (err, author) => {
+        if (err)
+          return message.channel.send({
+            embed: {
+              color: 0xff0000,
+              description: err.errmsg,
+            },
+          }).then(msg => {
+            msg.delete(15000)
+          })
+        else if (author)
+          Quote.find({author: author._id}, (err, quotes) => {
+            if (err)
               return message.channel.send({
                 embed: {
-                  color: 3447003,
-                  description: author.names[0] + ' has no quotes yet!',
+                  color: 0xff0000,
+                  description: err.errmsg,
                 },
               }).then(msg => {
                 msg.delete(15000)
               })
-            else
-              return message.channel.send({
-                embed: {
-                  color: 3447003,
-                  title: quotes[Math.floor(Math.random() * (quotes.length))].quote + ' - ' + author.names[0],
-                },
-              })
-          }
-        })
-      else
-        return message.channel.send({
-          embed: {
-            color: 3447003,
-            description: 'This author does not exist!',
-          },
-        }).then(msg => {
-          msg.delete(15000)
-        })
-    })
+            else {
+              if (quotes.length === 0)
+                return message.channel.send({
+                  embed: {
+                    color: 3447003,
+                    description: author.names[0] + ' has no quotes yet!',
+                  },
+                }).then(msg => {
+                  msg.delete(15000)
+                })
+              else
+                return message.channel.send({
+                  embed: {
+                    color: 3447003,
+                    title: quotes[Math.floor(Math.random() * (quotes.length))].quote + ' - ' + author.names[0],
+                  },
+                })
+            }
+          })
+        else
+          return message.channel.send({
+            embed: {
+              color: 3447003,
+              description: 'This author does not exist!',
+            },
+          }).then(msg => {
+            msg.delete(15000)
+          })
+      })
+    }
   }
 }
